@@ -1,7 +1,7 @@
 from fastapi import FastAPI, File, HTTPException, UploadFile
 
 from db.connection import init_db
-from services.dtp import import_dtp, get_dtp
+from services.dtp import import_dtp, get_dtp, get_load_log
 
 init_db()
 app = FastAPI()
@@ -15,7 +15,7 @@ async def upload_csv(file: UploadFile = File(...)):
     content = await file.read()
 
     try:
-        count = import_dtp(content)
+        count = import_dtp(content, file.filename)
     except (KeyError, ValueError) as e:
         raise HTTPException(status_code=400, detail=f"Ошибка в CSV: {e}")
 
@@ -24,3 +24,7 @@ async def upload_csv(file: UploadFile = File(...)):
 @app.get("/api/dtp")
 def list_dtp(page: int = 1):
     return get_dtp(page=page)
+
+@app.get("/api/load_log")
+def load_log(page: int = 1):
+    return get_load_log()

@@ -14,7 +14,7 @@ def get_connection():
 def init_db():
     with get_connection() as conn:
         conn.execute("""
-            CREATE TABLE IF NOT EXISTS dtp (
+            CREATE TABLE IF NOT EXISTS raw_dtp (
                 id INTEGER PRIMARY KEY,
                 tags TEXT,
                 category TEXT,
@@ -33,5 +33,18 @@ def init_db():
                 severity TEXT,
                 dead_count INTEGER,
                 injured_count INTEGER
+            )
+        """)
+
+        conn.execute("""
+            CREATE TABLE IF NOT EXISTS dtp_load_log (
+                id            SERIAL PRIMARY KEY,
+                file_name     TEXT,
+                started_at    TIMESTAMPTZ NOT NULL DEFAULT now(),
+                finished_at   TIMESTAMPTZ NOT NULL DEFAULT now(),
+                status        TEXT NOT NULL,
+                rows_total    INTEGER,
+                rows_inserted INTEGER,
+                error         TEXT
             )
         """)

@@ -23,6 +23,21 @@ export type DtpPage = {
   items: Dtp[];
   total: number;
   page: number;
-  page_size: number;
   pages: number;
+};
+
+export type DtpLog = {
+  id: number;
+  file_name: string;
+  started_at: string;
+  finished_at: string;
+  status: "ok" | "empty" | "error" | string;
+  rows_total: number;
+  rows_inserted: number;
+  error: string | null;
+};
+
+export type DataPage = {
+  items: DtpLog[];
+  total: number;
 };

@@ -1,22 +1,19 @@
 import { useState, useEffect } from "react";
 import type { DtpPage } from "../types.ts";
-
-const formatDate = (value: string) =>
-  new Date(value).toLocaleString("ru-RU");
+import {formatDate} from "../utils.ts";
 
 export const Data = () => {
-  const [pageLoading, setPageLoading] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
   const [pageNum, setPageNum] = useState<number>(1);
   const [data, setData] = useState<DtpPage>({
     items: [],
     total: 0,
     page: 1,
-    page_size: 50,
     pages: 0,
   });
 
   const loadData = async (page: number): Promise<void> => {
-    setPageLoading(true);
+    setLoading(true);
 
     try {
       const res = await fetch(`/api/dtp?page=${page}`);
@@ -31,7 +28,7 @@ export const Data = () => {
     } catch {
       alert("Нет связи с сервером");
     } finally {
-      setPageLoading(false);
+      setLoading(false);
     }
   };
 
@@ -51,7 +48,7 @@ export const Data = () => {
         <div className="list-pager">
           <button
             onClick={() => setPageNum(page - 1)}
-            disabled={pageLoading || page <= 1}
+            disabled={loading || page <= 1}
           >
             Назад
           </button>
@@ -62,14 +59,14 @@ export const Data = () => {
 
           <button
             onClick={() => setPageNum(page + 1)}
-            disabled={pageLoading || page >= pages}
+            disabled={loading || page >= pages}
           >
             Вперёд
           </button>
         </div>
       </div>
 
-      {pageLoading && <div className="list-status">Загрузка данных...</div>}
+      {loading && <div className="list-status">Загрузка данных...</div>}
 
       <div className="list-table-wrap">
         <table className="list-table">
@@ -105,7 +102,7 @@ export const Data = () => {
           </tbody>
         </table>
 
-        {items.length === 0 && !pageLoading && (
+        {items.length === 0 && !loading && (
           <div className="list-empty">Нет данных</div>
         )}
       </div>
