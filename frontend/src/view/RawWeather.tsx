@@ -12,15 +12,21 @@ const columns: Column<RawWeatherItem>[] = [
   {
     key: "html",
     header: "Ответ",
-    render: (i) => i.error || i.html
+    render: (i) => i.fetch_error || i.html
       ? i.html
       : <Loader />,
     className: "ellipsis"
   },
   {
-    key: "error",
-    header: "Ошибка",
-    render: (i) =>  i.error ?? "—",
+    key: "fetch_error",
+    header: "Ошибка запроса",
+    render: (i) =>  i.fetch_error ?? "—",
+    className: "ellipsis"
+  },
+  {
+    key: "parse_error",
+    header: "Ошибка парсинга",
+    render: (i) =>  i.parse_error ?? "—",
     className: "ellipsis"
   },
 ];

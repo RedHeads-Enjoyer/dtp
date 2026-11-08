@@ -15,7 +15,6 @@ export const useList = <T,>({ url, pageSize }: UseListOptions) => {
     setLoading(true);
     try {
       const params = new URLSearchParams({ page: String(page) });
-      if (pageSize) params.set("page_size", String(pageSize));
 
       const res = await fetch(`${url}?${params}`);
       if (!res.ok) throw new Error(`HTTP ${res.status}`);

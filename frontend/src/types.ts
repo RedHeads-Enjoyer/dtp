@@ -36,7 +36,8 @@ export type RawWeatherItem = {
   responded_at: string;
   url: string;
   html: string | null;
-  error: string | null;
+  fetch_error: string | null;
+  parse_error: string | null;
 };
 
 export type WeatherItem = {

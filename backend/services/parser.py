@@ -1,3 +1,4 @@
+import calendar
 from datetime import date
 from decimal import Decimal, InvalidOperation
 from urllib.parse import parse_qs, urlparse
@@ -33,6 +34,9 @@ def _save_month(conn, raw_id: int, station_id: int, year: int, month: int, html:
     rows = [r for r in parse_table(html) if len(r) >= 6 and r[0].isdigit()]
     if not rows:
         raise ValueError(f"в странице raw_id={raw_id} нет строк с днями")
+
+    days_in_month = calendar.monthrange(year, month)[1]
+    rows = [r for r in rows if 1 <= int(r[0]) <= days_in_month]
 
     with conn.cursor() as cur:
         for r in rows:

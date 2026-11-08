@@ -88,7 +88,7 @@ def _fetch_one(conn, row_id: int, url: str) -> str | None:
 
 
 
-def fill_pending(pause: float = 10.0) -> None:
+def fill_pending(pause: float = 3.0) -> None:
     with get_connection() as conn:
         if not _try_lock(conn):
             return
@@ -103,7 +103,7 @@ def fill_pending(pause: float = 10.0) -> None:
 
 
 def get_raw_weather(page: int = 1) -> dict:
-    return fetch_page(RawWeatherRecord, "raw_weather", "id DESC, id", page, -1)
+    return fetch_page(RawWeatherRecord, "raw_weather", "id DESC, id", page, 500)
 
 def get_weather(page: int = 1) -> dict:
-    return fetch_page(WeatherRecord, "weather", "observed_date DESC, id", page, -1)
+    return fetch_page(WeatherRecord, "weather", "observed_date DESC, id", page, 500)

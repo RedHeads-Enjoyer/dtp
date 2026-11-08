@@ -83,9 +83,9 @@ def import_dtp(content: bytes, file_name: str) -> int:
         raise
 
 
-def get_dtp(page: int = 1, page_size: int = MAX_PAGE_SIZE) -> dict:
-    return fetch_page(RawDtpRecord, "raw_dtp", "datetime DESC, id", page, page_size)
+def get_dtp(page: int = 1) -> dict:
+    return fetch_page(RawDtpRecord, "raw_dtp", "datetime DESC, id", page, 500)
 
 
 def get_load_log(page: int = 1) -> dict:
-    return fetch_page(LoadLogRecord, "dtp_load_log", "started_at DESC, id DESC", page, -1)
+    return fetch_page(LoadLogRecord, "dtp_load_log", "started_at DESC, id DESC", page, 500)
