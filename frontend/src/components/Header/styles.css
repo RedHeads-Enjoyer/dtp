@@ -1,0 +1,30 @@
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: var(--color-bg);
+  border-bottom: 1px solid var(--color-border);
+  font-size: 14px;
+}
+
+.header-nav {
+  display: flex;
+  gap: 4px;
+  padding: 0 16px;
+}
+
+.header-link {
+  padding: 12px 14px;
+  color: var(--color-text-muted);
+  font-weight: 500;
+  border-bottom: 2px solid transparent;
+}
+
+.header-link:hover,
+.header-link--active {
+  color: var(--color-accent);
+}
+
+.header-link--active {
+  border-bottom-color: var(--color-accent);
+}

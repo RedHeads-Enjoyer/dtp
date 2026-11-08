@@ -1,0 +1,82 @@
+.list-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 16px;
+  font-size: 14px;
+  color: var(--color-text);
+}
+
+.list-meta-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  font-weight: 600;
+}
+
+.list-pager {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+}
+
+.list-table-wrap {
+  overflow-x: auto;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+}
+
+.list-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.list-table th,
+.list-table td {
+  padding: 8px 12px;
+  text-align: left;
+  white-space: nowrap;
+  border-bottom: 1px solid color-mix(in srgb, var(--color-border) 60%, transparent);
+}
+
+.list-table th {
+  background: color-mix(in srgb, var(--color-border) 35%, var(--color-bg));
+  font-weight: 600;
+}
+
+.list-table tbody tr:nth-child(even) {
+  background: color-mix(in srgb, var(--color-border) 15%, var(--color-bg));
+}
+
+.list-table tbody tr:hover {
+  background: color-mix(in srgb, var(--color-accent) 8%, var(--color-bg));
+}
+
+.list-table .num {
+  text-align: right;
+}
+
+.list-table .cell-center {
+  text-align: center;
+}
+
+.list-table .list-address {
+  max-width: 280px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.list-status {
+  display: flex;
+  justify-content: center;
+  padding: 8px 0;
+}
+
+.list-empty {
+  padding: 24px;
+  text-align: center;
+  color: var(--color-text-muted);
+}

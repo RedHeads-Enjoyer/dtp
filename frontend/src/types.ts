@@ -1,4 +1,4 @@
-export type Dtp = {
+export type DtpItem = {
   id: number;
   tags: string;
   category: string;
@@ -19,14 +19,7 @@ export type Dtp = {
   injured_count: number;
 };
 
-export type DtpPage = {
-  items: Dtp[];
-  total: number;
-  page: number;
-  pages: number;
-};
-
-export type DtpLog = {
+export type LoadLogItem = {
   id: number;
   file_name: string;
   started_at: string;
@@ -37,7 +30,9 @@ export type DtpLog = {
   error: string | null;
 };
 
-export type DataPage = {
-  items: DtpLog[];
+export type Page<T> = {
+  items: T[];
   total: number;
+  page?: number;
+  pages?: number;
 };
