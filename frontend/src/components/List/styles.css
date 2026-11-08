@@ -63,7 +63,7 @@
   text-align: center;
 }
 
-.list-table .list-address {
+.list-table .ellipsis {
   max-width: 280px;
   overflow: hidden;
   text-overflow: ellipsis;

@@ -30,6 +30,15 @@ export type LoadLogItem = {
   error: string | null;
 };
 
+export type WeatherItem = {
+  id: number;
+  requested_at: string;
+  responded_at: string;
+  url: string;
+  html: string | null;
+  error: string | null;
+};
+
 export type Page<T> = {
   items: T[];
   total: number;

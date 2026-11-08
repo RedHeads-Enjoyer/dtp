@@ -1,15 +1,14 @@
 import csv
 import io
-import math
-from dataclasses import asdict, fields
 from datetime import datetime, timezone
-from typing import Optional, Type, TypeVar
+from typing import Optional
 
 from db.connection import get_connection
 from entity.dtp_record import DTP_COLUMNS, DtpRecord
 from entity.load_log_record import LoadLogRecord
+from services.utils import fetch_page
+from services.weather import enqueue_months
 
-T = TypeVar("T")
 
 DTP_INSERT_SQL = (
     f"INSERT INTO raw_dtp ({', '.join(DTP_COLUMNS)}) "
@@ -40,6 +39,15 @@ def _write_log(file_name: str, started_at: datetime, status: str, rows_total: in
             ),
         )
 
+def _months_from_dtp(conn) -> set[tuple[int, int]]:
+    with conn.cursor() as cur:
+        cur.execute("""
+            SELECT DISTINCT EXTRACT(YEAR FROM datetime)::int,
+                            EXTRACT(MONTH FROM datetime)::int
+            FROM raw_dtp
+        """)
+        return set(cur.fetchall())
+
 
 def import_dtp(content: bytes, file_name: str) -> int:
     started_at = datetime.now(timezone.utc)
@@ -63,6 +71,11 @@ def import_dtp(content: bytes, file_name: str) -> int:
             file_name, started_at, "ok",
             rows_total=len(records), rows_inserted=inserted,
         )
+
+        with get_connection() as conn:
+            needed = _months_from_dtp(conn)
+            enqueue_months(conn, station_id=27612, months=needed)
+
         return inserted
 
     except Exception as e:
@@ -70,35 +83,9 @@ def import_dtp(content: bytes, file_name: str) -> int:
         raise
 
 
-def _fetch_page(cls: Type[T], table: str, order_by: str, page: int, page_size: int) -> dict:
-    page = max(page, 1)
-    page_size = min(max(page_size, 1), MAX_PAGE_SIZE)
-    columns = [f.name for f in fields(cls)]
-
-    with get_connection() as conn:
-        total = conn.execute(f"SELECT COUNT(*) FROM {table}").fetchone()[0]
-        rows = conn.execute(
-            f"SELECT {', '.join(columns)} FROM {table} "
-            f"ORDER BY {order_by} "
-            "LIMIT %s OFFSET %s",
-            (page_size, (page - 1) * page_size),
-        ).fetchall()
-
-    return {
-        "items": [asdict(cls(*row)) for row in rows],
-        "total": total,
-        "page": page,
-        "pages": math.ceil(total / page_size),
-    }
-
-
 def get_dtp(page: int = 1, page_size: int = MAX_PAGE_SIZE) -> dict:
-    return _fetch_page(
-        DtpRecord, "raw_dtp", "datetime DESC, id", page, page_size
-    )
+    return fetch_page(DtpRecord, "raw_dtp", "datetime DESC, id", page, page_size)
 
 
-def get_load_log(page: int = 1, page_size: int = MAX_PAGE_SIZE) -> dict:
-    return _fetch_page(
-        LoadLogRecord, "dtp_load_log", "started_at DESC, id DESC", page, page_size
-    )
+def get_load_log(page: int = 1) -> dict:
+    return fetch_page(LoadLogRecord, "dtp_load_log", "started_at DESC, id DESC", page, -1)

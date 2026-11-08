@@ -17,7 +17,7 @@ const columns: Column<LoadLogItem>[] = [
     key: "file",
     header: "Файл",
     render: (i) => i.file_name ?? "—",
-    className: "list-address",
+    className: "ellipsis",
   },
   {
     key: "status",
@@ -34,7 +34,7 @@ const columns: Column<LoadLogItem>[] = [
     key: "error",
     header: "Ошибка",
     render: (i) => i.error ?? "—",
-    className: "list-address",
+    className: "ellipsis",
   },
 ];
 

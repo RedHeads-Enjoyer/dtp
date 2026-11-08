@@ -1,10 +1,11 @@
 import {Fragment} from "react";
 
 import {Route, Routes} from "react-router-dom";
-import {Data} from "./view/Data.tsx";
+import {Dtps} from "./view/Dtps.tsx";
 import {Dash} from "./view/Dash.tsx";
 import {Uploader} from "./view/Uploader.tsx";
 import {Header} from "./components/Header/Header.tsx";
+import {Weather} from "./view/Weather.tsx";
 
 export const App = () => {
     return (
@@ -13,7 +14,8 @@ export const App = () => {
 
             <Routes>
                 <Route path="/upload" element={<Uploader />} />
-                <Route path="/data" element={<Data />} />
+                <Route path="/data" element={<Dtps />} />
+                <Route path="/weather" element={<Weather />} />
                 <Route path="/dash" element={<Dash />} />
             </Routes>
         </Fragment>

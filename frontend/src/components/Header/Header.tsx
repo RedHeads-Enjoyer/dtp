@@ -2,8 +2,9 @@ import { NavLink } from "react-router-dom";
 import "./styles.css"
 
 const links = [
-  { to: "/upload", label: "Импорт данных" },
-  { to: "/data", label: "Данные" },
+  { to: "/upload", label: "Импорт структурированных данных" },
+  { to: "/data", label: "Структурированные данные" },
+  { to: "/weather", label: "Неуструктурированные данные" },
   { to: "/dash", label: "Дашборд" },
 ];
 
