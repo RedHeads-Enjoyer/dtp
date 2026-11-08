@@ -44,3 +44,19 @@ RAW_WEATHER_DDL = """
         error   TEXT
     )
 """
+
+WEATHER_DDL = """
+    CREATE TABLE IF NOT EXISTS weather (
+        id              SERIAL PRIMARY KEY,
+        station_id      INTEGER NOT NULL,
+        observed_date   DATE NOT NULL,
+        temp_min        NUMERIC(4,1),
+        temp_mean       NUMERIC(4,1),
+        temp_max        NUMERIC(4,1),
+        temp_dev        NUMERIC(4,1),
+        precipitation   NUMERIC(6,1),
+        raw_id          INTEGER REFERENCES raw_weather(id),
+        parsed_at       TIMESTAMPTZ NOT NULL DEFAULT now(),
+        UNIQUE (station_id, observed_date)
+    )
+"""

@@ -4,7 +4,7 @@ from datetime import datetime, timezone
 from typing import Optional
 
 from db.connection import get_connection
-from entity.dtp_record import DTP_COLUMNS, DtpRecord
+from entity.raw_dtp_record import DTP_COLUMNS, RawDtpRecord
 from entity.load_log_record import LoadLogRecord
 from services.utils import fetch_page
 from services.weather import enqueue_months
@@ -55,7 +55,7 @@ def import_dtp(content: bytes, file_name: str) -> int:
     try:
         text = content.decode("utf-8-sig")
         records = [
-            DtpRecord.from_csv_row(row)
+            RawDtpRecord.from_csv_row(row)
             for row in csv.DictReader(io.StringIO(text))
         ]
 
@@ -84,7 +84,7 @@ def import_dtp(content: bytes, file_name: str) -> int:
 
 
 def get_dtp(page: int = 1, page_size: int = MAX_PAGE_SIZE) -> dict:
-    return fetch_page(DtpRecord, "raw_dtp", "datetime DESC, id", page, page_size)
+    return fetch_page(RawDtpRecord, "raw_dtp", "datetime DESC, id", page, page_size)
 
 
 def get_load_log(page: int = 1) -> dict:

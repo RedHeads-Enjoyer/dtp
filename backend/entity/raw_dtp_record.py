@@ -20,7 +20,7 @@ def _parse(name: str, raw: Optional[str]) -> Any:
 
 
 @dataclass
-class DtpRecord:
+class RawDtpRecord:
     id: int
     tags: Optional[str]
     category: Optional[str]
@@ -41,7 +41,7 @@ class DtpRecord:
     injured_count: Optional[int]
 
     @classmethod
-    def from_csv_row(cls, row: dict[str, str]) -> "DtpRecord":
+    def from_csv_row(cls, row: dict[str, str]) -> "RawDtpRecord":
         values = {}
         for f in fields(cls):
             raw = (row.get(f.name) or "").strip() or None
@@ -52,4 +52,4 @@ class DtpRecord:
     def to_params(self) -> dict:
         return asdict(self)
 
-DTP_COLUMNS = [f.name for f in fields(DtpRecord)]
+DTP_COLUMNS = [f.name for f in fields(RawDtpRecord)]

@@ -1,16 +1,17 @@
-from dataclasses import dataclass, fields
-from datetime import datetime
-from typing import Optional
+from dataclasses import dataclass
+from datetime import date, datetime
+from decimal import Decimal
 
 
-@dataclass
+@dataclass(frozen=True)
 class WeatherRecord:
     id: int
-    url: str
-    requested_at:datetime
-    responded_at: Optional[datetime]
-    html: Optional[str]
-    error: Optional[str]
-
-
-WEATHER_COLUMNS = [f.name for f in fields(WeatherRecord)]
+    station_id: int
+    observed_date: date
+    temp_min: Decimal | None
+    temp_mean: Decimal | None
+    temp_max: Decimal | None
+    temp_dev: Decimal | None
+    precipitation: Decimal | None
+    raw_id: int | None
+    parsed_at: datetime

@@ -1,7 +1,7 @@
 import os
 import psycopg
 
-from db.tables import RAW_DTP_DDL, LOAD_LOG_DDL, RAW_WEATHER_DDL
+from db.tables import RAW_DTP_DDL, LOAD_LOG_DDL, RAW_WEATHER_DDL, WEATHER_DDL
 
 
 def get_connection():
@@ -19,3 +19,4 @@ def init_db():
             conn.execute(RAW_DTP_DDL)
             conn.execute(LOAD_LOG_DDL)
             conn.execute(RAW_WEATHER_DDL)
+            conn.execute(WEATHER_DDL)
