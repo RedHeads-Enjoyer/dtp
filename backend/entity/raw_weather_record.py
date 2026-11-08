@@ -10,7 +10,8 @@ class RawWeatherRecord:
     requested_at:datetime
     responded_at: Optional[datetime]
     html: Optional[str]
-    error: Optional[str]
+    fetch_error: Optional[str]
+    parse_error: Optional[str]
 
 
 WEATHER_COLUMNS = [f.name for f in fields(RawWeatherRecord)]

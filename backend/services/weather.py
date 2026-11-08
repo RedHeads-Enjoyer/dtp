@@ -5,7 +5,7 @@ import requests
 from db.connection import get_connection
 from entity.raw_weather_record import RawWeatherRecord
 from entity.weather_record import WeatherRecord
-from services.parser import parse_pending
+from services.parser import parse_one
 from services.utils import fetch_page
 
 BASE_URL = "https://www.pogodaiklimat.ru/monitor.php"
@@ -54,32 +54,38 @@ def _pending(conn) -> list[tuple[int, str]]:
     with conn.cursor() as cur:
         cur.execute(
             "SELECT id, url FROM raw_weather "
-            "WHERE html IS NULL AND error IS NULL ORDER BY id"
+            "WHERE html IS NULL AND fetch_error IS NULL ORDER BY id"
         )
         return cur.fetchall()
 
+def _set_fetch_error(conn, row_id: int, exc: Exception) -> None:
+    with conn.cursor() as cur:
+        cur.execute(
+            "UPDATE raw_weather SET fetch_error = %s, responded_at = now() WHERE id = %s",
+            (f"{type(exc).__name__}: {exc}"[:1000], row_id),
+        )
+    conn.commit()
 
-def _fetch_one(conn, row_id: int, url: str) -> None:
+def _fetch_one(conn, row_id: int, url: str) -> str | None:
     try:
         html = _download(url)
-        sql = "UPDATE raw_weather SET html = %s, error = NULL, responded_at = now() WHERE id = %s"
-        params = (html, row_id)
-    except requests.RequestException as exc:
-        sql = "UPDATE raw_weather SET error = %s, responded_at = now() WHERE id = %s"
-        params = (f"{type(exc).__name__}: {exc}"[:1000], row_id)
+    except Exception as exc:
+        _set_fetch_error(conn, row_id, exc)
+        return None
 
     try:
         with conn.cursor() as cur:
-            cur.execute(sql, params)
-        conn.commit()
-    except Exception as exc:
-        conn.rollback()
-        with conn.cursor() as cur:
             cur.execute(
-                "UPDATE raw_weather SET error = %s, responded_at = now() WHERE id = %s",
-                (f"{type(exc).__name__}: {exc}"[:1000], row_id),
+                "UPDATE raw_weather SET html = %s, fetch_error = NULL, responded_at = now() WHERE id = %s",
+                (html, row_id),
             )
         conn.commit()
+        return html
+    except Exception as exc:
+        conn.rollback()
+        _set_fetch_error(conn, row_id, exc)
+        return None
+
 
 
 def fill_pending(pause: float = 10.0) -> None:
@@ -88,12 +94,12 @@ def fill_pending(pause: float = 10.0) -> None:
             return
         try:
             for row_id, url in _pending(conn):
-                _fetch_one(conn, row_id, url)
+                html = _fetch_one(conn, row_id, url)
+                if html is not None:
+                    parse_one(row_id, url, html)
                 time.sleep(pause)
         finally:
             _unlock(conn)
-
-    parse_pending()
 
 
 def get_raw_weather(page: int = 1) -> dict:

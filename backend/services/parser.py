@@ -21,6 +21,8 @@ def parse_table(html: str) -> list[list[str]]:
     if wrap is None:
         raise ValueError("не найден блок climate-table-wrap")
     table = wrap.find("table")
+    if table is None:
+        raise ValueError("в climate-table-wrap нет таблицы")
     return [
         [td.get_text(strip=True) for td in tr.find_all("td")]
         for tr in table.find_all("tr")
@@ -62,29 +64,26 @@ def _parse_url(url: str) -> tuple[int, int, int]:
     q = parse_qs(urlparse(url).query)
     return int(q["id"][0]), int(q["year"][0]), int(q["month"][0])
 
-def parse_pending() -> int:
+def parse_one(raw_id: int, url: str, html: str) -> int:
     with get_connection() as conn:
+        try:
+            station_id, year, month = _parse_url(url)
+            total = _save_month(conn, raw_id, station_id, year, month, html)
+            conn.commit()
+            return total
+        except Exception as exc:
+            conn.rollback()
+            _set_parse_error(conn, raw_id, exc)
+            return 0
+
+def _set_parse_error(conn, raw_id: int, exc: Exception) -> None:
+    try:
         with conn.cursor() as cur:
             cur.execute(
-                """
-                SELECT r.id, r.url, r.html
-                FROM raw_weather r
-                WHERE r.html IS NOT NULL
-                  AND NOT EXISTS (
-                      SELECT 1 FROM weather w WHERE w.raw_id = r.id
-                  )
-                ORDER BY r.id
-                """
+                "UPDATE raw_weather SET parse_error = %s WHERE id = %s",
+                (f"{type(exc).__name__}: {exc}"[:1000], raw_id),
             )
-            pending = cur.fetchall()
-
-        total = 0
-        for raw_id, url, html in pending:
-            try:
-                station_id, year, month = _parse_url(url)
-                total += _save_month(conn, raw_id, station_id, year, month, html)
-                conn.commit()
-            except Exception as exc:
-                conn.rollback()
-                print(f"parse error raw_id={raw_id}: {exc}")
-        return total
+        conn.commit()
+    except Exception as inner:
+        conn.rollback()
+        print(f"не удалось записать parse_error raw_id={raw_id}: {inner}")
