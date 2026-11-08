@@ -36,12 +36,12 @@ LOAD_LOG_DDL = """
 
 RAW_WEATHER_DDL = """
     CREATE TABLE IF NOT EXISTS raw_weather (
-        id      SERIAL PRIMARY KEY,
-        url     TEXT UNIQUE,
+        id            SERIAL PRIMARY KEY,
+        url           TEXT UNIQUE,
         requested_at  TIMESTAMPTZ NOT NULL DEFAULT now(),
         responded_at  TIMESTAMPTZ,
-        html    TEXT,
-        error   TEXT
+        html          TEXT,
+        error         TEXT
     )
 """
 

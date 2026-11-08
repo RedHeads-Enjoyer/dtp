@@ -4,6 +4,8 @@ import requests
 
 from db.connection import get_connection
 from entity.raw_weather_record import RawWeatherRecord
+from entity.weather_record import WeatherRecord
+from services.parser import parse_pending
 from services.utils import fetch_page
 
 BASE_URL = "https://www.pogodaiklimat.ru/monitor.php"
@@ -86,12 +88,16 @@ def fill_pending(pause: float = 10.0) -> None:
             return
         try:
             for row_id, url in _pending(conn):
-                print(row_id, url)
                 _fetch_one(conn, row_id, url)
                 time.sleep(pause)
         finally:
             _unlock(conn)
 
+    parse_pending()
+
+
+def get_raw_weather(page: int = 1) -> dict:
+    return fetch_page(RawWeatherRecord, "raw_weather", "id DESC, id", page, -1)
 
 def get_weather(page: int = 1) -> dict:
-    return fetch_page(RawWeatherRecord, "raw_weather", "id DESC, id", page, -1)
+    return fetch_page(WeatherRecord, "weather", "observed_date DESC, id", page, -1)

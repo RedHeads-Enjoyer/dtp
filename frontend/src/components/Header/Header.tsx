@@ -4,8 +4,8 @@ import "./styles.css"
 const links = [
   { to: "/upload", label: "Импорт структурированных данных" },
   { to: "/data", label: "Структурированные данные" },
-  { to: "/weather", label: "Неуструктурированные данные" },
-  { to: "/dash", label: "Дашборд" },
+  { to: "/raw_weather", label: "Неструктурированные данные" },
+  { to: "/weather", label: "Обработанные данные" },
 ];
 
 export const Header = () => {

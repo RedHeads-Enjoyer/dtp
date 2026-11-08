@@ -54,7 +54,7 @@ export const List = <T extends { id: number | string }>({
           Всего записей: {total.toLocaleString("ru-RU")}
         </div>
 
-        {pager && (
+        {pager && pager.pages > 1 && (
           <div className="list-pager">
             <Button
               onClick={() => pager.onChange(pager.page - 1)}

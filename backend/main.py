@@ -2,7 +2,7 @@ from fastapi import FastAPI, File, HTTPException, UploadFile, BackgroundTasks
 
 from db.connection import init_db
 from services.dtp import import_dtp, get_dtp, get_load_log
-from services.weather import fill_pending, get_weather
+from services.weather import fill_pending, get_raw_weather, get_weather
 
 init_db()
 app = FastAPI()
@@ -28,6 +28,10 @@ async def upload_csv(
 @app.get("/api/dtp")
 def list_dtp(page: int = 1):
     return get_dtp(page=page)
+
+@app.get("/api/raw_weather")
+def list_dtp(page: int = 1):
+    return get_raw_weather(page=page)
 
 @app.get("/api/weather")
 def list_dtp(page: int = 1):
