@@ -75,3 +75,22 @@ WEATHER_DDL = """
         UNIQUE (station_id, observed_date)
     )
 """
+
+FEATURES_DDL = """
+    CREATE TABLE IF NOT EXISTS features (
+        version        INTEGER NOT NULL,
+        date           DATE NOT NULL,
+        accidents      INTEGER,
+        lag_1          DOUBLE PRECISION,
+        lag_7          DOUBLE PRECISION,
+        roll_7         DOUBLE PRECISION,
+        dow            SMALLINT,
+        month          SMALLINT,
+        temp_dev       NUMERIC(4,1),
+        temp_min       NUMERIC(4,1),
+        temp_max       NUMERIC(4,1),
+        temp_mean      NUMERIC(4,1),
+        precipitation  NUMERIC(6,1),
+        PRIMARY KEY (date, version)
+    )
+"""

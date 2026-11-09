@@ -7,6 +7,7 @@ const links = [
   { to: "/clean_data", label: "Очищенные данные" },
   { to: "/raw_weather", label: "Сырые данные" },
   { to: "/weather", label: "Извлечённые данные" },
+  { to: "/features", label: "Итоговые данные" },
 ];
 
 export const Header = () => {

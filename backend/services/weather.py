@@ -6,7 +6,7 @@ from db.connection import get_connection
 from entity.raw_weather_record import RawWeatherRecord
 from entity.weather_record import WeatherRecord
 from services.parser import parse_one
-from services.utils import fetch_page
+from services.utils import fetch_page, try_lock, unlock
 
 BASE_URL = "https://www.pogodaiklimat.ru/monitor.php"
 LOCK_KEY = 676767
@@ -36,18 +36,6 @@ def _download(url: str) -> str:
     resp.raise_for_status()
     resp.encoding = resp.apparent_encoding
     return resp.text.replace("\x00", "")
-
-
-def _try_lock(conn) -> bool:
-    with conn.cursor() as cur:
-        cur.execute("SELECT pg_try_advisory_lock(%s)", (LOCK_KEY,))
-        return cur.fetchone()[0]
-
-
-def _unlock(conn) -> None:
-    with conn.cursor() as cur:
-        cur.execute("SELECT pg_advisory_unlock(%s)", (LOCK_KEY,))
-    conn.commit()
 
 
 def _pending(conn) -> list[tuple[int, str]]:
@@ -90,7 +78,7 @@ def _fetch_one(conn, row_id: int, url: str) -> str | None:
 
 def fill_pending(pause: float = 3.0) -> None:
     with get_connection() as conn:
-        if not _try_lock(conn):
+        if not try_lock(LOCK_KEY, conn):
             return
         try:
             for row_id, url in _pending(conn):
@@ -99,7 +87,7 @@ def fill_pending(pause: float = 3.0) -> None:
                     parse_one(row_id, url, html)
                 time.sleep(pause)
         finally:
-            _unlock(conn)
+            unlock(LOCK_KEY, conn)
 
 
 def get_raw_weather(page: int = 1) -> dict:

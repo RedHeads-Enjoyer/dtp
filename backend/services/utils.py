@@ -36,3 +36,15 @@ def fetch_page(cls: Type[T], table: str, order_by: str, page: int, page_size: in
         "page": page,
         "pages": pages,
     }
+
+
+def try_lock(lock_key: int, conn) -> bool:
+    with conn.cursor() as cur:
+        cur.execute("SELECT pg_try_advisory_lock(%s)", (lock_key,))
+        return cur.fetchone()[0]
+
+
+def unlock(lock_key: int, conn) -> None:
+    with conn.cursor() as cur:
+        cur.execute("SELECT pg_advisory_unlock(%s)", (lock_key,))
+    conn.commit()
