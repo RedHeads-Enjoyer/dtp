@@ -54,6 +54,7 @@ export type WeatherItem = {
 };
 
 export type DailyItem = {
+  id: number;
   date: string;
   accidents: number;
   lag_1: number;

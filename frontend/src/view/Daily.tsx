@@ -4,6 +4,7 @@ import { useList } from "../hooks/useList.ts";
 import type {DailyItem} from "../types.ts";
 
 const columns: Column<DailyItem>[] = [
+  { key: "id", header: "Номер", render: (i) => i.id },
   { key: "created_at", header: "Дата обработки", render: (i) => formatDate(i.created_at) },
   { key: "date", header: "Дата", render: (i) => formatDate(i.date) },
   { key: "accidents", header: "Количество ДТП", render: (i) => i.accidents },

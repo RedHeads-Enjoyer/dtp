@@ -4,6 +4,7 @@ from datetime import date, datetime
 
 @dataclass(frozen=True)
 class DailyRecord:
+    id: int
     date: date
     accidents: int
     lag_1: float

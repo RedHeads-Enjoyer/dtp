@@ -23,8 +23,9 @@ RAW_DTP_DDL = """
 
 DAILY_DDL = """
     CREATE TABLE IF NOT EXISTS daily (
+        id          SERIAL PRIMARY KEY,
         created_at  TIMESTAMPTZ NOT NULL DEFAULT now(),
-        date        DATE PRIMARY KEY,
+        date        DATE UNIQUE,
         accidents   INTEGER NOT NULL CHECK (accidents >= 0),
         lag_1       DOUBLE PRECISION NOT NULL,
         lag_7       DOUBLE PRECISION NOT NULL,
