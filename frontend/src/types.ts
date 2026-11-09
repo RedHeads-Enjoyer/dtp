@@ -53,6 +53,17 @@ export type WeatherItem = {
   temp_min: number;
 };
 
+export type DailyItem = {
+  date: string;
+  accidents: number;
+  lag_1: number;
+  lag_7: number;
+  roll_7: number;
+  dow: number;
+  month: number;
+  created_at: string;
+};
+
 export type Page<T> = {
   items: T[];
   total: number;

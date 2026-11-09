@@ -4,3 +4,4 @@ python-multipart
 psycopg[binary]
 requests
 beautifulsoup4
+pandas

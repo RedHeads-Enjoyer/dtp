@@ -20,8 +20,8 @@ const columns: Column<DtpItem>[] = [
   { key: "injured", header: "Ранено", align: "right", render: (i) => i.injured_count },
 ];
 
-export const Dtps = () => {
-  const dtp = useList<DtpItem>({ url: "/api/dtp", pageSize: 500 });
+export const RawDtps = () => {
+  const dtp = useList<DtpItem>({ url: "/api/raw_dtp" });
 
   return (
     <List

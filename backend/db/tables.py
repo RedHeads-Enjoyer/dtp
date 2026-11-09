@@ -21,6 +21,19 @@ RAW_DTP_DDL = """
     )
 """
 
+DAILY_DDL = """
+    CREATE TABLE IF NOT EXISTS daily (
+        created_at  TIMESTAMPTZ NOT NULL DEFAULT now(),
+        date        DATE PRIMARY KEY,
+        accidents   INTEGER NOT NULL CHECK (accidents >= 0),
+        lag_1       DOUBLE PRECISION NOT NULL,
+        lag_7       DOUBLE PRECISION NOT NULL,
+        roll_7      DOUBLE PRECISION NOT NULL,
+        dow         SMALLINT NOT NULL CHECK (dow BETWEEN 0 AND 6),
+        month       SMALLINT NOT NULL CHECK (month BETWEEN 1 AND 12)
+    )
+"""
+
 LOAD_LOG_DDL = """
     CREATE TABLE IF NOT EXISTS dtp_load_log (
         id            SERIAL PRIMARY KEY,

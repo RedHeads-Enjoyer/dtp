@@ -3,9 +3,10 @@ import "./styles.css"
 
 const links = [
   { to: "/upload", label: "Импорт структурированных данных" },
-  { to: "/data", label: "Структурированные данные" },
-  { to: "/raw_weather", label: "Неструктурированные данные" },
-  { to: "/weather", label: "Обработанные данные" },
+  { to: "/raw_data", label: "Исходные данные" },
+  { to: "/clean_data", label: "Очищенные данные" },
+  { to: "/raw_weather", label: "Сырые данные" },
+  { to: "/weather", label: "Извлечённые данные" },
 ];
 
 export const Header = () => {

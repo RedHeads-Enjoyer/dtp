@@ -58,7 +58,7 @@ export const FileSelector = ({
 
       <span className="uploader-name">{file ? file.name : emptyText}</span>
 
-      <Button onClick={handleUpload} disabled={!file} loading={uploading}>
+      <Button onClick={handleUpload} disabled={!file || uploading} loading={uploading}>
         {buttonText}
       </Button>
     </div>
