@@ -26,10 +26,9 @@ DAILY_DDL = """
         id          SERIAL PRIMARY KEY,
         created_at  TIMESTAMPTZ NOT NULL DEFAULT now(),
         date        DATE UNIQUE,
-        accidents   INTEGER NOT NULL CHECK (accidents >= 0),
-        lag_1       DOUBLE PRECISION NOT NULL,
-        lag_7       DOUBLE PRECISION NOT NULL,
-        roll_7      DOUBLE PRECISION NOT NULL,
+        accidents_lag_1       DOUBLE PRECISION NOT NULL,
+        accidents_lag_7       DOUBLE PRECISION NOT NULL,
+        accidents_roll_7      DOUBLE PRECISION NOT NULL,
         dow         SMALLINT NOT NULL CHECK (dow BETWEEN 0 AND 6),
         month       SMALLINT NOT NULL CHECK (month BETWEEN 1 AND 12)
     )
@@ -80,10 +79,9 @@ FEATURES_DDL = """
     CREATE TABLE IF NOT EXISTS features (
         version        INTEGER NOT NULL,
         date           DATE NOT NULL,
-        accidents      INTEGER,
-        lag_1          DOUBLE PRECISION,
-        lag_7          DOUBLE PRECISION,
-        roll_7         DOUBLE PRECISION,
+        accidents_lag_1          DOUBLE PRECISION,
+        accidents_lag_7          DOUBLE PRECISION,
+        accidents_roll_7         DOUBLE PRECISION,
         dow            SMALLINT,
         month          SMALLINT,
         temp_dev       NUMERIC(4,1),

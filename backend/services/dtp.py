@@ -130,25 +130,24 @@ def _update_daily(conn) -> None:
     daily.index.name = "date"
 
     # Признаки: лаги и скользящее среднее считаем только по прошлым дням
-    daily["lag_1"] = daily["accidents"].shift(1)
-    daily["lag_7"] = daily["accidents"].shift(7)
-    daily["roll_7"] = daily["accidents"].shift(1).rolling(7).mean()
+    daily["accidents_lag_1"] = daily["accidents"].shift(1)
+    daily["accidents_lag_7"] = daily["accidents"].shift(7)
+    daily["accidents_roll_7"] = daily["accidents"].shift(1).rolling(7).mean()
 
     # Календарные признаки: день недели (0 = понедельник) и месяц
     daily["dow"] = daily.index.day_of_week
     daily["month"] = daily.index.month
 
     # Удаляем первые 7 дней, где лаги ещё не определены
-    daily = daily.dropna(subset=["lag_1", "lag_7", "roll_7"])
+    daily = daily.dropna(subset=["accidents_lag_1", "accidents_lag_7", "accidents_roll_7"])
 
     # Приводим строки к типам, которые понимает драйвер БД (без numpy)
     out = [
         (
             row.date.date(),
-            int(row.accidents),
-            float(row.lag_1),
-            float(row.lag_7),
-            float(row.roll_7),
+            float(row.accidents_lag_1),
+            float(row.accidents_lag_7),
+            float(row.accidents_roll_7),
             int(row.dow),
             int(row.month),
         )
@@ -160,8 +159,8 @@ def _update_daily(conn) -> None:
         cur.executemany(
             """
             INSERT INTO daily
-                (date, accidents, lag_1, lag_7, roll_7, dow, month)
-            VALUES (%s, %s, %s, %s, %s, %s, %s)
+                (date, accidents_lag_1, accidents_lag_7, accidents_roll_7, dow, month)
+            VALUES (%s, %s, %s, %s, %s, %s)
             ON CONFLICT (date) DO NOTHING
             """,
             out,

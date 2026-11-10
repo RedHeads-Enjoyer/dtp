@@ -56,10 +56,9 @@ export type WeatherItem = {
 export type DailyItem = {
   id: number;
   date: string;
-  accidents: number;
-  lag_1: number;
-  lag_7: number;
-  roll_7: number;
+  accidents_lag_1: number;
+  accidents_lag_7: number;
+  accidents_roll_7: number;
   dow: number;
   month: number;
   created_at: string;
@@ -68,17 +67,16 @@ export type DailyItem = {
 export type FeatureItem = {
   version: number;
   date: string;
-  accidents: number;
-  lag_1: number | null;
-  lag_7: number | null;
-  roll_7: number | null;
+  accidents_lag_1: number;
+  accidents_lag_7: number;
+  accidents_roll_7: number;
   dow: number;
   month: number;
-  temp_dev: number | null;
-  temp_min: number | null;
-  temp_max: number | null;
-  temp_mean: number | null;
-  precipitation: number | null;
+  temp_dev: number;
+  temp_min: number;
+  temp_max: number;
+  temp_mean: number;
+  precipitation: number;
 };
 
 export type Page<T> = {

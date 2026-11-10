@@ -6,10 +6,9 @@ from datetime import date, datetime
 class DailyRecord:
     id: int
     date: date
-    accidents: int
-    lag_1: float
-    lag_7: float
-    roll_7: float
+    accidents_lag_1: float
+    accidents_lag_7: float
+    accidents_roll_7: float
     dow: int
     month: int
     created_at: datetime

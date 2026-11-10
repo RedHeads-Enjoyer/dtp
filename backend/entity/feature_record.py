@@ -6,10 +6,9 @@ from datetime import date
 class FeatureRecord:
     version: int
     date: date
-    accidents: int
-    lag_1: float
-    lag_7: float
-    roll_7: float
+    accidents_lag_1: float
+    accidents_lag_7: float
+    accidents_roll_7: float
     dow: int
     month: int
     temp_dev: float

@@ -26,14 +26,13 @@ def _update(dates, version, conn):
 
     sql = """
         INSERT INTO features
-            (version, date, accidents, lag_1, lag_7, roll_7, dow, month, temp_dev, temp_min, temp_max, temp_mean, precipitation)
+            (version, date, accidents_lag_1, accidents_lag_7, accidents_roll_7, dow, month, temp_dev, temp_min, temp_max, temp_mean, precipitation)
         SELECT
             %(version)s,
             d.date,
-            d.accidents,
-            d.lag_1,
-            d.lag_7,
-            d.roll_7,
+            d.accidents_lag_1,
+            d.accidents_lag_7,
+            d.accidents_roll_7,
             d.dow,
             d.month,
             w.temp_dev,

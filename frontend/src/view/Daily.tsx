@@ -7,10 +7,9 @@ const columns: Column<DailyItem>[] = [
   { key: "id", header: "Номер", render: (i) => i.id },
   { key: "created_at", header: "Дата обработки", render: (i) => formatDate(i.created_at) },
   { key: "date", header: "Дата", render: (i) => formatDate(i.date) },
-  { key: "accidents", header: "Количество ДТП", render: (i) => i.accidents },
-  { key: "lag_1", header: "Лаг 1", render: (i) => i.lag_1 },
-  { key: "lag_7", header: "Лаг 7", render: (i) => i.lag_7 },
-  { key: "roll_7", header: "Среднее 7", render: (i) => i.roll_7 },
+  { key: "accidents_lag_1", header: "Лаг 1", render: (i) => i.accidents_lag_1 },
+  { key: "accidents_lag_7", header: "Лаг 7", render: (i) => i.accidents_lag_7 },
+  { key: "accidents_roll_7", header: "Среднее 7", render: (i) => i.accidents_roll_7 },
   { key: "dow", header: "День недели", render: (i) => i.dow },
   { key: "month", header: "Месяц", render: (i) => i.month },
 ];
