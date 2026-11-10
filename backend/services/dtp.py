@@ -44,9 +44,15 @@ def _write_log(file_name: str, started_at: datetime, status: str, rows_total: in
 def _months_from_dtp(conn) -> set[tuple[int, int]]:
     with conn.cursor() as cur:
         cur.execute("""
-            SELECT DISTINCT EXTRACT(YEAR FROM datetime)::int,
-                            EXTRACT(MONTH FROM datetime)::int
-            FROM raw_dtp
+            WITH r AS (
+                SELECT date_trunc('month', MIN(datetime)) AS lo,
+                       date_trunc('month', MAX(datetime)) AS hi
+                FROM raw_dtp
+            )
+            SELECT EXTRACT(YEAR FROM g)::int,
+                   EXTRACT(MONTH FROM g)::int
+            FROM r,
+                 generate_series(r.lo, r.hi, interval '1 month') AS g
         """)
         return set(cur.fetchall())
 
