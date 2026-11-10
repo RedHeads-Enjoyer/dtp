@@ -1,8 +1,8 @@
 from fastapi import FastAPI, File, HTTPException, UploadFile, BackgroundTasks
 
-from db.connection import init_db
+from db.connection import init_db, get_connection
 from services.dtp import import_dtp, get_raw_dtp, get_load_log, get_daily
-from services.feature import get_features
+from services.feature import get_features, is_features_ready
 from services.weather import fill_pending, get_raw_weather, get_weather
 
 init_db()
@@ -39,12 +39,17 @@ def list_features(page: int = 1):
     return get_features(page)
 
 @app.get("/api/raw_weather")
-def list_dtp(page: int = 1):
+def list_raw_weather(page: int = 1):
     return get_raw_weather(page=page)
 
 @app.get("/api/weather")
-def list_dtp(page: int = 1):
+def list_weather(page: int = 1):
     return get_weather(page=page)
+
+@app.get("/api/features/ready")
+def features_ready():
+    with get_connection() as conn:
+        return is_features_ready(conn)
 
 @app.get("/api/load_log")
 def load_log(page: int = 1):

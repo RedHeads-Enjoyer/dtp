@@ -2,6 +2,8 @@ import { formatDate } from "../utils.ts";
 import { List, type Column } from "../components/List/List.tsx";
 import { useList } from "../hooks/useList.ts";
 import type {FeatureItem} from "../types.ts";
+import {Fragment} from "react";
+import {ReadyStatus} from "../components/ReadyStatus/ReadyStatus.tsx";
 
 const columns: Column<FeatureItem>[] = [
   { key: "date", header: "Дата", render: (i) => formatDate(i.date, "date") },
@@ -23,18 +25,26 @@ export const Features = () => {
   const features = useList<FeatureItem>({ url: "/api/features", pageSize: 500 });
 
   return (
-    <List
-      items={features.items}
-      total={features.total}
-      columns={columns}
-      loading={features.loading}
-      emptyText="Нет данных"
-      pager={{
-        page: features.page,
-        pages: features.pages ?? 0,
-        onChange: features.setPage,
-      }}
-      getKey={(i) => i.date}
-    />
+    <Fragment>
+      <ReadyStatus
+        url="/api/features/ready"
+        loaderLabel="Загрузка готовности данных"
+      />
+
+      <List
+        items={features.items}
+        total={features.total}
+        columns={columns}
+        loading={features.loading}
+        emptyText="Нет данных"
+        pager={{
+          page: features.page,
+          pages: features.pages ?? 0,
+          onChange: features.setPage,
+        }}
+        getKey={(i) => i.date}
+      />
+    </Fragment>
+
   );
 };

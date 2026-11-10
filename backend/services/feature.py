@@ -68,4 +68,7 @@ def update_features(conn):
 def get_features(page: int = 1, page_size: int = 500) -> dict:
     return fetch_page(FeatureRecord, "features", "date DESC", page, page_size)
 
+def is_features_ready(conn) -> bool:
+    return len(_features_to_insert(conn)) == 0
+
 

@@ -1,0 +1,16 @@
+.wrapper {
+    display: inline-flex;
+  padding: 16px;
+}
+
+.ready {
+  color: var(--color-success);
+}
+
+.stale {
+  color: var(--color-danger);
+}
+
+.error {
+  color: var(--color-danger);
+}
