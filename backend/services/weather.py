@@ -57,16 +57,11 @@ def _set_fetch_error(conn, url: str, exc: Exception) -> None:
     conn.commit()
 
 def _update_weather(conn) -> None:
-    print("_update_weather")
     # Читаем все наблюдения погоды и превращаем их в DataFrame
     result = get_weather_parsed(1, -1)
     df = pd.DataFrame(result["items"])
 
-    print("df")
-    print(df)
-
     if df.empty:
-        print("df.empty")
         return
 
     # Переводим дату в datetime и убираем дубликаты по станции и дню
@@ -165,9 +160,7 @@ def fill_pending(pause: float = 3.0) -> None:
         finally:
             unlock(LOCK_KEY, conn)
 
-        print("fill_pending")
         if weather_parsing_is_complete(conn):
-            print("weather_parsing_is_complete")
             _update_weather(conn)
             update_features(conn)
 

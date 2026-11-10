@@ -2,6 +2,8 @@ import { List, type Column } from "../components/List/List.tsx";
 import { useList } from "../hooks/useList.ts";
 import type {WeatherCleanItem} from "../types.ts";
 import {formatDate} from "../utils.ts";
+import {Fragment} from "react";
+import {ReadyStatus} from "../components/ReadyStatus/ReadyStatus.tsx";
 
 const columns: Column<WeatherCleanItem>[] = [
   { key: "created_at", header: "Дата обработки", render: (i) => formatDate(i.created_at)},
@@ -23,7 +25,13 @@ export const WeatherClean = () => {
   const weather = useList<WeatherCleanItem>({ url: "/api/weather" });
 
   return (
-    <List
+    <Fragment>
+      <ReadyStatus
+        url="/api/features/ready"
+        loaderLabel="Загрузка готовности данных"
+      />
+
+     <List
       items={weather.items}
       total={weather.total}
       columns={columns}
@@ -36,5 +44,7 @@ export const WeatherClean = () => {
       }}
       getKey={(i) => i.station_id + " " + i.observed_date}
     />
+    </Fragment>
+
   );
 };

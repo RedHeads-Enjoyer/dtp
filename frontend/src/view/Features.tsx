@@ -12,12 +12,17 @@ const columns: Column<FeatureItem>[] = [
   { key: "accidents_lag_7", header: "Лаг 7", render: (i) => i.accidents_lag_7 },
   { key: "accidents_roll_7", header: "Среднее 7", render: (i) => i.accidents_roll_7 },
   { key: "dow", header: "День недели", render: (i) => i.dow },
-  { key: "month", header: "Месяц", render: (i) => i.month },
-  { key: "temp_min", header: "Минимальная температура", render: (i) => i.temp_min},
-  { key: "temp_mean", header: "Средняя температура", render: (i) => i.temp_mean},
-  { key: "temp_max", header: "Максимальная температура", render: (i) => i.temp_max},
-  { key: "temp_dev", header: "Отклонение температуры", render: (i) => i.temp_dev},
-    { key: "precipitation", header: "Осадки, мм", render: (i) => i.precipitation},
+  { key: "temp_mean_lag_1", header: "T_mean лаг 1", render: (i) => i.temp_mean_lag_1},
+  { key: "temp_mean_mean_3", header: "T_mean среднее 3", render: (i) => i.temp_mean_mean_3},
+  { key: "temp_mean_mean_7", header: "T_mean среднее 7", render: (i) => i.temp_mean_mean_7},
+  { key: "temp_min_lag_1", header: "T_min лаг 1", render: (i) => i.temp_min_lag_1},
+  { key: "temp_min_min_3", header: "T_min мин 3", render: (i) => i.temp_min_min_3},
+  { key: "temp_max_lag_1", header: "T_max лаг 1", render: (i) => i.temp_max_lag_1},
+  { key: "temp_change", header: "Изменение T_mean", render: (i) => i.temp_change},
+  { key: "temp_dev_lag_1", header: "Отклонение T_mean лаг 1", render: (i) => i.temp_dev_lag_1},
+  { key: "precipitation_lag_1", header: "Осадки лаг 1", render: (i) => i.precipitation_lag_1},
+  { key: "precipitation_sum_3", header: "Осадки сумма 3", render: (i) => i.precipitation_sum_3},
+  { key: "precipitation_sum_7", header: "Осадки сумма 7", render: (i) => i.precipitation_sum_7},
 ];
 
 export const Features = () => {

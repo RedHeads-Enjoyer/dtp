@@ -106,8 +106,7 @@ def _update_daily(conn) -> None:
     # Читаем все записи ДТП и превращаем их в DataFrame
     result = get_raw_dtp(1, -1)
     df = pd.DataFrame(result["items"])
-    if df.empty:
-        return
+
     if df.empty:
         return
 

@@ -86,11 +86,17 @@ export type FeatureItem = {
   accidents_roll_7: number;
   dow: number;
   month: number;
-  temp_dev: number;
-  temp_min: number;
-  temp_max: number;
-  temp_mean: number;
-  precipitation: number;
+  temp_mean_lag_1: number;
+  temp_mean_mean_3: number;
+  temp_mean_mean_7: number;
+  temp_min_lag_1: number;
+  temp_min_min_3: number;
+  temp_max_lag_1: number;
+  temp_change: number;
+  temp_dev_lag_1: number;
+  precipitation_lag_1: number;
+  precipitation_sum_3: number;
+  precipitation_sum_7: number;
 };
 
 export type Page<T> = {

@@ -93,18 +93,24 @@ WEATHER_DDL = """
 
 FEATURES_DDL = """
     CREATE TABLE IF NOT EXISTS features (
-        version                  INTEGER NOT NULL,
-        date                     DATE NOT NULL,
-        accidents_lag_1          NUMERIC(6,2),
-        accidents_lag_7          NUMERIC(6,2),
-        accidents_roll_7         NUMERIC(6,2),
-        dow                      SMALLINT,
-        month                    SMALLINT,
-        temp_dev                 NUMERIC(4,1),
-        temp_min                 NUMERIC(4,1),
-        temp_max                 NUMERIC(4,1),
-        temp_mean                NUMERIC(4,1),
-        precipitation            NUMERIC(6,1),
+        version               INTEGER NOT NULL,
+        date                  DATE,
+        accidents_lag_1       NUMERIC(6,2) NOT NULL,
+        accidents_lag_7       NUMERIC(6,2) NOT NULL,
+        accidents_roll_7      NUMERIC(6,2) NOT NULL,
+        dow                   SMALLINT NOT NULL CHECK (dow BETWEEN 0 AND 6),
+        month                 SMALLINT NOT NULL CHECK (month BETWEEN 1 AND 12),
+        temp_mean_lag_1       NUMERIC(6,2),
+        temp_mean_mean_3      NUMERIC(6,2),
+        temp_mean_mean_7      NUMERIC(6,2),
+        temp_min_lag_1        NUMERIC(6,2),
+        temp_min_min_3        NUMERIC(6,2),
+        temp_max_lag_1        NUMERIC(6,2),
+        temp_change           NUMERIC(6,2),
+        temp_dev_lag_1        NUMERIC(6,2),
+        precipitation_lag_1   NUMERIC(6,2),
+        precipitation_sum_3   NUMERIC(6,2),
+        precipitation_sum_7   NUMERIC(6,2),
         PRIMARY KEY (date, version)
     )
 """

@@ -11,11 +11,17 @@ class FeatureRecord:
     accidents_roll_7: float
     dow: int
     month: int
-    temp_dev: float
-    temp_min: float
-    temp_max: float
-    temp_mean: float
-    precipitation: float
+    temp_mean_lag_1: float
+    temp_mean_mean_3: float
+    temp_mean_mean_7: float
+    temp_min_lag_1: float
+    temp_min_min_3: float
+    temp_max_lag_1: float
+    temp_change: float
+    temp_dev_lag_1: float
+    precipitation_lag_1: float
+    precipitation_sum_3: float
+    precipitation_sum_7: float
 
     def as_tuple(self) -> tuple:
         return astuple(self)

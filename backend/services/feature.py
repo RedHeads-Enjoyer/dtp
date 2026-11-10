@@ -26,7 +26,9 @@ def _update(dates, version, conn):
 
     sql = """
         INSERT INTO features
-            (version, date, accidents_lag_1, accidents_lag_7, accidents_roll_7, dow, month, temp_dev, temp_min, temp_max, temp_mean, precipitation)
+            (version, date, accidents_lag_1, accidents_lag_7, accidents_roll_7, dow, month, 
+             temp_mean_lag_1, temp_mean_mean_3, temp_mean_mean_7, temp_min_lag_1, temp_min_min_3, temp_max_lag_1, 
+             temp_change, temp_dev_lag_1, precipitation_lag_1, precipitation_sum_3, precipitation_sum_7)
         SELECT
             %(version)s,
             d.date,
@@ -35,13 +37,19 @@ def _update(dates, version, conn):
             d.accidents_roll_7,
             d.dow,
             d.month,
-            w.temp_dev,
-            w.temp_min,
-            w.temp_max,
-            w.temp_mean,
-            w.precipitation
+            w.temp_mean_lag_1,
+            w.temp_mean_mean_3,
+            w.temp_mean_mean_7,
+            w.temp_min_lag_1,
+            w.temp_min_min_3,
+            w.temp_max_lag_1,
+            w.temp_change,
+            w.temp_dev_lag_1,
+            w.precipitation_lag_1,
+            w.precipitation_sum_3,
+            w.precipitation_sum_7
         FROM daily d
-        JOIN weather_parsed w ON w.observed_date = d.date
+        JOIN weather w ON w.observed_date = d.date
         WHERE d.date = ANY(%(dates)s)
     """
 
