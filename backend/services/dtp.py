@@ -8,6 +8,7 @@ from db.connection import get_connection
 from entity.daily_record import DailyRecord
 from entity.raw_dtp_record import DTP_COLUMNS, RawDtpRecord
 from entity.load_log_record import LoadLogRecord
+from services.config import STATION_ID
 from services.utils import fetch_page
 from services.weather import enqueue_months
 
@@ -82,7 +83,7 @@ def import_dtp(content: bytes, file_name: str) -> int:
 
         with get_connection() as conn:
             needed = _months_from_dtp(conn)
-            enqueue_months(conn, station_id=27612, months=needed)
+            enqueue_months(conn, station_id=STATION_ID, months=needed)
             _update_daily(conn)
 
         return inserted

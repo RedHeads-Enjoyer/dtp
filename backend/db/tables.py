@@ -94,3 +94,37 @@ FEATURES_DDL = """
         PRIMARY KEY (date, version)
     )
 """
+
+MODELS_DDL = """
+    CREATE TABLE IF NOT EXISTS models (
+        id          SERIAL PRIMARY KEY,
+        name        TEXT NOT NULL UNIQUE,
+        created_at  TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+    )
+"""
+
+RUNS_DDL = """
+    CREATE TABLE IF NOT EXISTS runs (
+        id               SERIAL PRIMARY KEY,
+        model_id         INTEGER NOT NULL REFERENCES models(id),
+        params           JSONB NOT NULL DEFAULT '{}'::jsonb,
+        feature_version  INTEGER NOT NULL,
+        random_state     INTEGER,
+        artifact_path    TEXT,
+        train_start  DATE,
+        train_end    DATE,
+        val_start    DATE,
+        val_end      DATE,
+        test_start   DATE,
+        test_end     DATE,
+        n_train      INTEGER,
+        n_val        INTEGER,
+        n_test       INTEGER,
+        mae_train    DOUBLE PRECISION,
+        mae_val      DOUBLE PRECISION,
+        mae_test     DOUBLE PRECISION,
+        mase_train   DOUBLE PRECISION,
+        mase_val     DOUBLE PRECISION,
+        mase_test    DOUBLE PRECISION
+    )
+"""

@@ -8,6 +8,7 @@ import {RawWeather} from "./view/RawWeather.tsx";
 import {Weather} from "./view/Weather.tsx";
 import {Daily} from "./view/Daily.tsx";
 import {Features} from "./view/Features.tsx";
+import {Baseline} from "./view/Baseline.tsx";
 
 export const App = () => {
     return (
@@ -21,6 +22,7 @@ export const App = () => {
                 <Route path="/raw_weather" element={<RawWeather />} />
                 <Route path="/weather" element={<Weather />} />
                 <Route path="/features" element={<Features />} />
+                <Route path="/baseline" element={<Baseline />} />
             </Routes>
         </Fragment>
     );
