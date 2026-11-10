@@ -39,6 +39,23 @@ export type WeatherRawItem = {
   parse_error: string | null;
 };
 
+export type WeatherCleanItem = {
+  station_id: number;
+  observed_date: string;
+  created_at: string;
+  temp_mean_lag_1: number | null;
+  temp_mean_mean_3: number | null;
+  temp_mean_mean_7: number | null;
+  temp_min_lag_1: number | null;
+  temp_min_min_3: number | null;
+  temp_max_lag_1: number | null;
+  temp_change: number | null;
+  temp_dev_lag_1: number | null;
+  precipitation_lag_1: number | null;
+  precipitation_sum_3: number | null;
+  precipitation_sum_7: number | null;
+};
+
 export type WeatherParsedItem = {
   observed_date: string;
   parsed_at: string;

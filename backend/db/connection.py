@@ -1,8 +1,9 @@
 import os
 import psycopg
 
-from db.tables import RAW_DTP_DDL, LOAD_LOG_DDL, WEATHER_RAW_DDL, WEATHER_PARSED_DDL, DAILY_DDL, FEATURES_DDL, MODELS_DDL, \
-    RUNS_DDL
+from db.tables import RAW_DTP_DDL, LOAD_LOG_DDL, WEATHER_RAW_DDL, WEATHER_PARSED_DDL, DAILY_DDL, FEATURES_DDL, \
+    MODELS_DDL, \
+    RUNS_DDL, WEATHER_DDL
 from db.values import MODELS_INSERT
 
 
@@ -24,6 +25,7 @@ def init_db():
             conn.execute(LOAD_LOG_DDL)
             conn.execute(WEATHER_RAW_DDL)
             conn.execute(WEATHER_PARSED_DDL)
+            conn.execute(WEATHER_DDL)
             conn.execute(FEATURES_DDL)
             conn.execute(MODELS_DDL)
             conn.execute(RUNS_DDL)

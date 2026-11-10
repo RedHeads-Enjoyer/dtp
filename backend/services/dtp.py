@@ -46,7 +46,7 @@ def _months_from_dtp(conn) -> set[tuple[int, int]]:
     with conn.cursor() as cur:
         cur.execute("""
             WITH r AS (
-                SELECT date_trunc('month', MIN(datetime)) AS lo,
+                SELECT date_trunc('month', MIN(datetime)) - interval '1 month' AS lo,
                        date_trunc('month', MAX(datetime)) AS hi
                 FROM raw_dtp
             )
@@ -154,14 +154,14 @@ def _update_daily(conn) -> None:
         for row in daily.reset_index().itertuples(index=False)
     ]
 
-    # Вставляем строки; дни, которые уже есть в таблице, пропускаются по ключу date
+    # Вставляем строки; дни, которые уже есть в таблице
     with conn.cursor() as cur:
+        cur.execute("DELETE FROM daily")
         cur.executemany(
             """
             INSERT INTO daily
                 (date, accidents_lag_1, accidents_lag_7, accidents_roll_7, dow, month)
             VALUES (%s, %s, %s, %s, %s, %s)
-            ON CONFLICT (date) DO NOTHING
             """,
             out,
         )

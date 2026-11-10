@@ -23,13 +23,13 @@ RAW_DTP_DDL = """
 
 DAILY_DDL = """
     CREATE TABLE IF NOT EXISTS daily (
-        created_at  TIMESTAMPTZ NOT NULL DEFAULT now(),
-        date        DATE PRIMARY KEY,
-        accidents_lag_1       DOUBLE PRECISION NOT NULL,
-        accidents_lag_7       DOUBLE PRECISION NOT NULL,
-        accidents_roll_7      DOUBLE PRECISION NOT NULL,
-        dow         SMALLINT NOT NULL CHECK (dow BETWEEN 0 AND 6),
-        month       SMALLINT NOT NULL CHECK (month BETWEEN 1 AND 12)
+        created_at            TIMESTAMPTZ NOT NULL DEFAULT now(),
+        date                  DATE PRIMARY KEY,
+        accidents_lag_1       NUMERIC(6,2) NOT NULL,
+        accidents_lag_7       NUMERIC(6,2) NOT NULL,
+        accidents_roll_7      NUMERIC(6,2) NOT NULL,
+        dow                   SMALLINT NOT NULL CHECK (dow BETWEEN 0 AND 6),
+        month                 SMALLINT NOT NULL CHECK (month BETWEEN 1 AND 12)
     )
 """
 
@@ -61,10 +61,10 @@ WEATHER_PARSED_DDL = """
     CREATE TABLE IF NOT EXISTS weather_parsed (
         station_id      INTEGER NOT NULL,
         observed_date   DATE NOT NULL,
-        temp_min        NUMERIC(4,1),
-        temp_mean       NUMERIC(4,1),
-        temp_max        NUMERIC(4,1),
-        temp_dev        NUMERIC(4,1),
+        temp_min        NUMERIC(6,1),
+        temp_mean       NUMERIC(6,1),
+        temp_max        NUMERIC(6,1),
+        temp_dev        NUMERIC(6,1),
         precipitation   NUMERIC(6,1),
         parsed_at       TIMESTAMPTZ NOT NULL DEFAULT now(),
         PRIMARY KEY (station_id, observed_date)
@@ -76,31 +76,28 @@ WEATHER_DDL = """
         station_id            INTEGER NOT NULL,
         observed_date         DATE NOT NULL,
         created_at  TIMESTAMPTZ NOT NULL DEFAULT now(),
-        temp_mean_lag_1       DOUBLE PRECISION,
-        temp_mean_mean_3      DOUBLE PRECISION,
-        temp_mean_mean_7      DOUBLE PRECISION,
-        temp_min_lag_1        DOUBLE PRECISION,
-        temp_min_min_3        DOUBLE PRECISION,
-        temp_max_lag_1        DOUBLE PRECISION,
-        temp_change           DOUBLE PRECISION,
-        temp_dev_lag_1        DOUBLE PRECISION,
-        precipitation_lag_1   DOUBLE PRECISION,
-        precipitation_sum_3   DOUBLE PRECISION,
-        precipitation_sum_7   DOUBLE PRECISION,
+        temp_mean_lag_1       NUMERIC(6,2),
+        temp_mean_mean_3      NUMERIC(6,2),
+        temp_mean_mean_7      NUMERIC(6,2),
+        temp_min_lag_1        NUMERIC(6,2),
+        temp_min_min_3        NUMERIC(6,2),
+        temp_max_lag_1        NUMERIC(6,2),
+        temp_change           NUMERIC(6,2),
+        temp_dev_lag_1        NUMERIC(6,2),
+        precipitation_lag_1   NUMERIC(6,2),
+        precipitation_sum_3   NUMERIC(6,2),
+        precipitation_sum_7   NUMERIC(6,2),
         UNIQUE (station_id, observed_date)
-        
-    )
-        
-        
+    )     
 """
 
 FEATURES_DDL = """
     CREATE TABLE IF NOT EXISTS features (
         version                  INTEGER NOT NULL,
         date                     DATE NOT NULL,
-        accidents_lag_1          DOUBLE PRECISION,
-        accidents_lag_7          DOUBLE PRECISION,
-        accidents_roll_7         DOUBLE PRECISION,
+        accidents_lag_1          NUMERIC(6,2),
+        accidents_lag_7          NUMERIC(6,2),
+        accidents_roll_7         NUMERIC(6,2),
         dow                      SMALLINT,
         month                    SMALLINT,
         temp_dev                 NUMERIC(4,1),
