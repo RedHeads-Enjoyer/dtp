@@ -29,6 +29,7 @@ export const Weather = () => {
         pages: weather.pages ?? 0,
         onChange: weather.setPage,
       }}
+      getKey={(i) => i.id}
     />
   );
 };

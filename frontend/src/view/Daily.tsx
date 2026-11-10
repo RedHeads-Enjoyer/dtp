@@ -30,6 +30,7 @@ export const Daily = () => {
         pages: daily.pages ?? 0,
         onChange: daily.setPage,
       }}
+      getKey={(i) => i.id}
     />
   );
 };

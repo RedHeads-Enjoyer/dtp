@@ -68,6 +68,7 @@ export const Uploader = () => {
         columns={columns}
         loading={log.loading}
         emptyText="Загрузок пока не было"
+        getKey={(i) => i.id}
       />
     </>
   );

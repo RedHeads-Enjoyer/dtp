@@ -65,6 +65,22 @@ export type DailyItem = {
   created_at: string;
 };
 
+export type FeatureItem = {
+  version: number;
+  date: string;
+  accidents: number;
+  lag_1: number | null;
+  lag_7: number | null;
+  roll_7: number | null;
+  dow: number;
+  month: number;
+  temp_dev: number | null;
+  temp_min: number | null;
+  temp_max: number | null;
+  temp_mean: number | null;
+  precipitation: number | null;
+};
+
 export type Page<T> = {
   items: T[];
   total: number;

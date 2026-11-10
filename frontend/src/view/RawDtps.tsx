@@ -35,6 +35,7 @@ export const RawDtps = () => {
         pages: dtp.pages ?? 0,
         onChange: dtp.setPage,
       }}
+      getKey={(i) => i.id}
     />
   );
 };

@@ -5,6 +5,7 @@ import requests
 from db.connection import get_connection
 from entity.raw_weather_record import RawWeatherRecord
 from entity.weather_record import WeatherRecord
+from services.feature import update_features
 from services.parser import parse_one
 from services.utils import fetch_page, try_lock, unlock
 
@@ -89,6 +90,13 @@ def fill_pending(pause: float = 3.0) -> None:
         finally:
             unlock(LOCK_KEY, conn)
 
+        if weather_is_complete(conn):
+            update_features(conn)
+
+def weather_is_complete(conn) -> bool:
+    with conn.cursor() as cur:
+        cur.execute("SELECT COUNT(*) FROM raw_weather WHERE html IS NULL")
+        return cur.fetchone()[0] == 0
 
 def get_raw_weather(page: int = 1) -> dict:
     return fetch_page(RawWeatherRecord, "raw_weather", "id DESC, id", page, 500)

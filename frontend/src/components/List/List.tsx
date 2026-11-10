@@ -19,11 +19,12 @@ type Pager = {
   onChange: (page: number) => void;
 };
 
-type ListProps<T extends { id: number | string }> = {
+type ListProps<T> = {
   items: T[];
   total: number;
   columns: Column<T>[];
   loading: boolean;
+  getKey: (item: T) => string | number;
   emptyText?: string;
   pager?: Pager;
   header?: ReactNode;
@@ -38,11 +39,12 @@ const ALIGN_CLASS: Record<Align, string | undefined> = {
 const cellClass = <T,>(c: Column<T>) =>
   [ALIGN_CLASS[c.align ?? "left"], c.className].filter(Boolean).join(" ") || undefined;
 
-export const List = <T extends { id: number | string }>({
+export const List = <T,>({
   items,
   total,
   columns,
   loading,
+  getKey,
   emptyText = "Нет данных",
   pager,
   header,
@@ -94,7 +96,7 @@ export const List = <T extends { id: number | string }>({
               <Loader size={16} label="Загрузка данных..." />
             </div>
             : items.map((item) => (
-              <tr key={item.id}>
+              <tr key={getKey(item)}>
                 {columns.map((c) => (
                   <td key={c.key} className={cellClass(c)}>
                     {c.render(item)}

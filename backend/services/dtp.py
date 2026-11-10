@@ -92,7 +92,6 @@ def get_raw_dtp(page: int = 1, page_size: int = 500) -> dict:
 def get_daily(page: int = 1, page_size: int = 500) -> dict:
     return fetch_page(DailyRecord, "daily", "date DESC", page, page_size)
 
-
 def get_load_log(page: int = 1) -> dict:
     return fetch_page(LoadLogRecord, "dtp_load_log", "started_at DESC, id DESC", page, 500)
 

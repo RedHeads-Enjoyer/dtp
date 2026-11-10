@@ -46,6 +46,7 @@ export const RawWeather = () => {
         pages: weather.pages ?? 0,
         onChange: weather.setPage,
       }}
+      getKey={(i) => i.id}
     />
   );
 };
