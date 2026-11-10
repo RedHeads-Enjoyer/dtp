@@ -1,11 +1,10 @@
 import { List, type Column } from "../components/List/List.tsx";
 import { useList } from "../hooks/useList.ts";
-import type {RawWeatherItem} from "../types.ts";
+import type {WeatherRawItem} from "../types.ts";
 import {formatDate} from "../utils.ts";
 import {Loader} from "../components/Loader/Loader.tsx";
 
-const columns: Column<RawWeatherItem>[] = [
-  { key: "id", header: "Номер", render: (i) => i.id },
+const columns: Column<WeatherRawItem>[] = [
   { key: "requested_at", header: "Дата постановки в очередь", render: (i) => formatDate(i.requested_at)},
   { key: "responded_at", header: "Дата загрузки", render: (i) => formatDate(i.responded_at)},
   { key: "url", header: "Запрос", render: (i) => i.url},
@@ -31,8 +30,8 @@ const columns: Column<RawWeatherItem>[] = [
   },
 ];
 
-export const RawWeather = () => {
-  const weather = useList<RawWeatherItem>({ url: "/api/raw_weather" });
+export const WeatherRaw = () => {
+  const weather = useList<WeatherRawItem>({ url: "/api/weather_raw" });
 
   return (
     <List
@@ -46,7 +45,7 @@ export const RawWeather = () => {
         pages: weather.pages ?? 0,
         onChange: weather.setPage,
       }}
-      getKey={(i) => i.id}
+      getKey={(i) => i.url}
     />
   );
 };

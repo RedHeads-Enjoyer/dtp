@@ -1,10 +1,9 @@
 import { List, type Column } from "../components/List/List.tsx";
 import { useList } from "../hooks/useList.ts";
-import type {WeatherItem} from "../types.ts";
+import type {WeatherParsedItem} from "../types.ts";
 import {formatDate} from "../utils.ts";
 
-const columns: Column<WeatherItem>[] = [
-  { key: "id", header: "Номер", render: (i) => i.id },
+const columns: Column<WeatherParsedItem>[] = [
   { key: "parsed_at", header: "Дата загрузки", render: (i) => formatDate(i.parsed_at)},
   { key: "observed_date", header: "Дата", render: (i) => formatDate(i.observed_date, "date")},
   { key: "precipitation", header: "Осадки, мм", render: (i) => i.precipitation},
@@ -14,8 +13,8 @@ const columns: Column<WeatherItem>[] = [
   { key: "temp_dev", header: "Отклонение температуры", render: (i) => i.temp_dev},
 ];
 
-export const Weather = () => {
-  const weather = useList<WeatherItem>({ url: "/api/weather" });
+export const WeatherParsed = () => {
+  const weather = useList<WeatherParsedItem>({ url: "/api/weather_parsed" });
 
   return (
     <List
@@ -29,7 +28,7 @@ export const Weather = () => {
         pages: weather.pages ?? 0,
         onChange: weather.setPage,
       }}
-      getKey={(i) => i.id}
+      getKey={(i) => i.station_id + " " + i.observed_date}
     />
   );
 };

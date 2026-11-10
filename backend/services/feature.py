@@ -41,7 +41,7 @@ def _update(dates, version, conn):
             w.temp_mean,
             w.precipitation
         FROM daily d
-        JOIN weather w ON w.observed_date = d.date
+        JOIN weather_parsed w ON w.observed_date = d.date
         WHERE d.date = ANY(%(dates)s)
     """
 

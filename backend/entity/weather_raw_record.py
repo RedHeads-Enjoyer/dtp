@@ -4,8 +4,7 @@ from typing import Optional
 
 
 @dataclass
-class RawWeatherRecord:
-    id: int
+class WeatherRawRecord:
     url: str
     requested_at:datetime
     responded_at: Optional[datetime]
@@ -14,4 +13,4 @@ class RawWeatherRecord:
     parse_error: Optional[str]
 
 
-WEATHER_COLUMNS = [f.name for f in fields(RawWeatherRecord)]
+WEATHER_RAW_COLUMNS = [f.name for f in fields(WeatherRawRecord)]

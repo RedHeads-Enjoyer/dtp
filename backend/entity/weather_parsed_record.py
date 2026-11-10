@@ -4,8 +4,7 @@ from decimal import Decimal
 
 
 @dataclass(frozen=True)
-class WeatherRecord:
-    id: int
+class WeatherParsedRecord:
     station_id: int
     observed_date: date
     temp_min: Decimal | None
@@ -13,5 +12,4 @@ class WeatherRecord:
     temp_max: Decimal | None
     temp_dev: Decimal | None
     precipitation: Decimal | None
-    raw_id: int | None
     parsed_at: datetime

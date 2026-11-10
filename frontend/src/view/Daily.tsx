@@ -4,9 +4,8 @@ import { useList } from "../hooks/useList.ts";
 import type {DailyItem} from "../types.ts";
 
 const columns: Column<DailyItem>[] = [
-  { key: "id", header: "Номер", render: (i) => i.id },
   { key: "created_at", header: "Дата обработки", render: (i) => formatDate(i.created_at) },
-  { key: "date", header: "Дата", render: (i) => formatDate(i.date) },
+  { key: "date", header: "Дата", render: (i) => formatDate(i.date, 'date') },
   { key: "accidents_lag_1", header: "Лаг 1", render: (i) => i.accidents_lag_1 },
   { key: "accidents_lag_7", header: "Лаг 7", render: (i) => i.accidents_lag_7 },
   { key: "accidents_roll_7", header: "Среднее 7", render: (i) => i.accidents_roll_7 },
@@ -29,7 +28,7 @@ export const Daily = () => {
         pages: daily.pages ?? 0,
         onChange: daily.setPage,
       }}
-      getKey={(i) => i.id}
+      getKey={(i) => i.date}
     />
   );
 };

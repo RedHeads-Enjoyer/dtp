@@ -30,8 +30,7 @@ export type LoadLogItem = {
   error: string | null;
 };
 
-export type RawWeatherItem = {
-  id: number;
+export type WeatherRawItem = {
   requested_at: string;
   responded_at: string;
   url: string;
@@ -40,8 +39,7 @@ export type RawWeatherItem = {
   parse_error: string | null;
 };
 
-export type WeatherItem = {
-  id: number;
+export type WeatherParsedItem = {
   observed_date: string;
   parsed_at: string;
   precipitation: number;
@@ -54,7 +52,6 @@ export type WeatherItem = {
 };
 
 export type DailyItem = {
-  id: number;
   date: string;
   accidents_lag_1: number;
   accidents_lag_7: number;

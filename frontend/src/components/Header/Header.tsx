@@ -3,10 +3,11 @@ import "./styles.css"
 
 const links = [
   { to: "/upload", label: "Импорт структурированных данных" },
-  { to: "/raw_data", label: "Исходные данные" },
-  { to: "/clean_data", label: "Очищенные данные" },
-  { to: "/raw_weather", label: "Сырые данные" },
-  { to: "/weather", label: "Извлечённые данные" },
+  { to: "/data_raw", label: "Структурированные данные (СД)" },
+  { to: "/data_clean", label: "Очищенные СД" },
+  { to: "/weather_raw", label: "Неструктурированные данные (НД)" },
+  { to: "/weather_parsed", label: "Извлеченные НД" },
+  { to: "/weather_clean", label: "Очищенные НД" },
   { to: "/features", label: "Итоговые данные" },
   { to: "/baseline", label: "Базовая модель" },
 ];

@@ -30,10 +30,10 @@ def parse_table(html: str) -> list[list[str]]:
     ]
 
 
-def _save_month(conn, raw_id: int, station_id: int, year: int, month: int, html: str) -> int:
+def _save_month(conn, station_id: int, year: int, month: int, html: str) -> int:
     rows = [r for r in parse_table(html) if len(r) >= 6 and r[0].isdigit()]
     if not rows:
-        raise ValueError(f"в странице raw_id={raw_id} нет строк с днями")
+        raise ValueError(f"в странице station={station_id} {year}-{month} нет строк с днями")
 
     days_in_month = calendar.monthrange(year, month)[1]
     rows = [r for r in rows if 1 <= int(r[0]) <= days_in_month]
@@ -43,23 +43,21 @@ def _save_month(conn, raw_id: int, station_id: int, year: int, month: int, html:
             observed = date(year, month, int(r[0]))
             cur.execute(
                 """
-                INSERT INTO weather
+                INSERT INTO weather_parsed
                     (station_id, observed_date, temp_min, temp_mean, temp_max,
-                     temp_dev, precipitation, raw_id, parsed_at)
-                VALUES (%s, %s, %s, %s, %s, %s, %s, %s, now())
+                     temp_dev, precipitation, parsed_at)
+                VALUES (%s, %s, %s, %s, %s, %s, %s, now())
                 ON CONFLICT (station_id, observed_date) DO UPDATE SET
                     temp_min = EXCLUDED.temp_min,
                     temp_mean = EXCLUDED.temp_mean,
                     temp_max = EXCLUDED.temp_max,
                     temp_dev = EXCLUDED.temp_dev,
                     precipitation = EXCLUDED.precipitation,
-                    raw_id = EXCLUDED.raw_id,
                     parsed_at = now()
                 """,
                 (
                     station_id, observed,
                     _num(r[1]), _num(r[2]), _num(r[3]), _num(r[4]), _num(r[5]),
-                    raw_id,
                 ),
             )
     return len(rows)
@@ -68,26 +66,26 @@ def _parse_url(url: str) -> tuple[int, int, int]:
     q = parse_qs(urlparse(url).query)
     return int(q["id"][0]), int(q["year"][0]), int(q["month"][0])
 
-def parse_one(raw_id: int, url: str, html: str) -> int:
+def parse_one(url: str, html: str) -> int:
     with get_connection() as conn:
         try:
             station_id, year, month = _parse_url(url)
-            total = _save_month(conn, raw_id, station_id, year, month, html)
+            total = _save_month(conn, station_id, year, month, html)
             conn.commit()
             return total
         except Exception as exc:
             conn.rollback()
-            _set_parse_error(conn, raw_id, exc)
+            _set_parse_error(conn, url, exc)
             return 0
 
-def _set_parse_error(conn, raw_id: int, exc: Exception) -> None:
+def _set_parse_error(conn, url: str, exc: Exception) -> None:
     try:
         with conn.cursor() as cur:
             cur.execute(
-                "UPDATE raw_weather SET parse_error = %s WHERE id = %s",
-                (f"{type(exc).__name__}: {exc}"[:1000], raw_id),
+                "UPDATE weather_raw SET parse_error = %s WHERE url = %s",
+                (f"{type(exc).__name__}: {exc}"[:1000], url),
             )
         conn.commit()
     except Exception as inner:
         conn.rollback()
-        print(f"не удалось записать parse_error raw_id={raw_id}: {inner}")
+        print(f"не удалось записать parse_error url={url}: {inner}")
