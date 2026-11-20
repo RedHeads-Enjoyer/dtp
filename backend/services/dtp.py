@@ -43,6 +43,7 @@ def _write_log(file_name: str, started_at: datetime, status: str, rows_total: in
         )
 
 def _months_from_dtp(conn) -> set[tuple[int, int]]:
+    # Берем все даты между max и min, у min берем -1, потому что lag
     with conn.cursor() as cur:
         cur.execute("""
             WITH r AS (
@@ -144,6 +145,7 @@ def _update_daily(conn) -> None:
     out = [
         (
             row.date.date(),
+            float(row.accidents),
             float(row.accidents_lag_1),
             float(row.accidents_lag_7),
             float(row.accidents_roll_7),
@@ -159,8 +161,8 @@ def _update_daily(conn) -> None:
         cur.executemany(
             """
             INSERT INTO daily
-                (date, accidents_lag_1, accidents_lag_7, accidents_roll_7, dow, month)
-            VALUES (%s, %s, %s, %s, %s, %s)
+                (date, accidents, accidents_lag_1, accidents_lag_7, accidents_roll_7, dow, month)
+            VALUES (%s, %s, %s, %s, %s, %s, %s)
             """,
             out,
         )

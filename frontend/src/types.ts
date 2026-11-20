@@ -70,6 +70,7 @@ export type WeatherParsedItem = {
 
 export type DailyItem = {
   date: string;
+  accidents: number;
   accidents_lag_1: number;
   accidents_lag_7: number;
   accidents_roll_7: number;
@@ -81,6 +82,7 @@ export type DailyItem = {
 export type FeatureItem = {
   version: number;
   date: string;
+  accidents: number;
   accidents_lag_1: number;
   accidents_lag_7: number;
   accidents_roll_7: number;

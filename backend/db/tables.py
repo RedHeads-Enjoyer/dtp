@@ -25,6 +25,7 @@ DAILY_DDL = """
     CREATE TABLE IF NOT EXISTS daily (
         created_at            TIMESTAMPTZ NOT NULL DEFAULT now(),
         date                  DATE PRIMARY KEY,
+        accidents             NUMERIC(6,2) NOT NULL,
         accidents_lag_1       INTEGER NOT NULL,
         accidents_lag_7       INTEGER NOT NULL,
         accidents_roll_7      NUMERIC(6,2) NOT NULL,
@@ -95,6 +96,7 @@ FEATURES_DDL = """
     CREATE TABLE IF NOT EXISTS features (
         version               INTEGER NOT NULL,
         date                  DATE,
+        accidents             NUMERIC(6,2) NOT NULL,
         accidents_lag_1       NUMERIC(6,2) NOT NULL,
         accidents_lag_7       NUMERIC(6,2) NOT NULL,
         accidents_roll_7      NUMERIC(6,2) NOT NULL,
