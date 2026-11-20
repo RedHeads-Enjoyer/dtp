@@ -1,8 +1,12 @@
 from fastapi import FastAPI, File, HTTPException, UploadFile, BackgroundTasks
 
 from db.connection import init_db, get_connection
+from models.BaseModel import BaseModel
+from models.data import load_features
 from services.dtp import import_dtp, get_raw_dtp, get_load_log, get_daily
 from services.feature import get_features, is_features_ready
+from services.models import fetch_model
+from services.utils import fetch_page
 from services.weather import fill_pending, get_weather_raw, get_weather_parsed, get_weather
 
 init_db()
@@ -58,3 +62,16 @@ def features_ready():
 @app.get("/api/load_log")
 def load_log(page: int = 1):
     return get_load_log()
+
+@app.get("/api/runs")
+def list_runs(page: int = 1, model_id: int = 1):
+    return fetch_model(model_id, page, 500)
+
+@app.get("/api/model_start")
+def list_features(model_id: int = 1):
+    with get_connection() as conn:
+        if (model_id == 1):
+            return BaseModel(conn).run()
+        if (model_id == 2):
+            return BaseModel(conn).run()
+        return BaseModel(conn).run()

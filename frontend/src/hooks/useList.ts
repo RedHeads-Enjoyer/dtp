@@ -4,9 +4,10 @@ import type { Page } from "../types.ts";
 type UseListOptions = {
   url: string;
   pageSize?: number;
+  modelId?: number;
 };
 
-export const useList = <T,>({ url, pageSize }: UseListOptions) => {
+export const useList = <T,>({ url, pageSize, modelId = 1 }: UseListOptions) => {
   const [page, setPage] = useState(1);
   const [data, setData] = useState<Page<T>>({ items: [], total: 0 });
   const [loading, setLoading] = useState(false);
@@ -14,7 +15,7 @@ export const useList = <T,>({ url, pageSize }: UseListOptions) => {
   const load = useCallback(async () => {
     setLoading(true);
     try {
-      const params = new URLSearchParams({ page: String(page) });
+      let params = new URLSearchParams({ page: String(page), model_id: `${modelId}` });
 
       const res = await fetch(`${url}?${params}`);
       if (!res.ok) throw new Error(`HTTP ${res.status}`);

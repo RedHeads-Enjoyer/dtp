@@ -107,3 +107,22 @@ export type Page<T> = {
   page?: number;
   pages?: number;
 };
+
+export type ModelItem = {
+  id: number;
+  name: string;
+  params: Record<string, unknown>;
+  random_seed: number;
+  feature_version: number;
+  artifact_path: string;
+  train_start: string;
+  train_end: string;
+  test_start: string;
+  test_end: string;
+  n_train: number;
+  n_test: number;
+  mae_train: number;
+  mae_test: number;
+  mase_train: number;
+  mase_test: number;
+};
