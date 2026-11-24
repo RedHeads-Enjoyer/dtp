@@ -10,6 +10,8 @@ const links = [
   { to: "/weather_clean", label: "Очищенные НД" },
   { to: "/features", label: "Итоговые данные" },
   { to: "/baseline", label: "Базовая модель" },
+  { to: "/ridge", label: "Ridge" },
+  { to: "/lightGBM", label: "LightGBM" },
 ];
 
 export const Header = () => {

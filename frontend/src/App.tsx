@@ -9,7 +9,7 @@ import {WeatherParsed} from "./view/WeatherParsed.tsx";
 import {Daily} from "./view/Daily.tsx";
 import {Features} from "./view/Features.tsx";
 import {WeatherClean} from "./view/WeatherClean.tsx";
-import {BaseModel} from "./view/BaseModel.tsx";
+import {Model} from "./view/Model.tsx";
 
 export const App = () => {
     return (
@@ -24,7 +24,9 @@ export const App = () => {
                 <Route path="/weather_parsed" element={<WeatherParsed />} />
                 <Route path="/weather_clean" element={<WeatherClean />} />
                 <Route path="/features" element={<Features />} />
-                <Route path="/baseline" element={<BaseModel />} />
+                <Route path="/baseline" element={<Model key="baseline" modelId={1} />} />
+                <Route path="/ridge" element={<Model key="ridge" modelId={2} />} />
+                <Route path="/lightGBM" element={<Model key="lightGBM" modelId={3} />} />
             </Routes>
         </Fragment>
     );

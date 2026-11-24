@@ -13,3 +13,6 @@ class BaseModel(AccidentModel):
 
     def predict(self, X):
         return X["accidents_lag_1"].to_numpy()
+
+    def save_artifact(self) -> None:
+        self.artifact_path = None

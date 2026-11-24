@@ -2,6 +2,8 @@ from fastapi import FastAPI, File, HTTPException, UploadFile, BackgroundTasks
 
 from db.connection import init_db, get_connection
 from models.BaseModel import BaseModel
+from models.LGBMModel import LGBMModel
+from models.RidgeModel import RidgeModel
 from models.data import load_features
 from services.dtp import import_dtp, get_raw_dtp, get_load_log, get_daily
 from services.feature import get_features, is_features_ready
@@ -73,5 +75,6 @@ def list_features(model_id: int = 1):
         if (model_id == 1):
             return BaseModel(conn).run()
         if (model_id == 2):
-            return BaseModel(conn).run()
-        return BaseModel(conn).run()
+            return RidgeModel(conn).run()
+        if (model_id == 3):
+            return LGBMModel(conn).run()

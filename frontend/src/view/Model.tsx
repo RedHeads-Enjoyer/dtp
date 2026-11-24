@@ -6,6 +6,7 @@ import {Button} from "../components/Button/Button.tsx";
 import {useState} from "react";
 import {Params} from "../components/Params/Params.tsx";
 import {Metric} from "../components/Metric/Metric.tsx";
+import {ReadyStatus} from "../components/ReadyStatus/ReadyStatus.tsx";
 
 const columns: Column<ModelItem>[] = [
   { key: "id", header: "№", render: (i) => i.id},
@@ -24,14 +25,18 @@ const columns: Column<ModelItem>[] = [
   { key: "mase_test", header: "MASE тест", render: (i) => <Metric value={i.mase_test}/>},
 ];
 
-export const BaseModel = () => {
-  const weather = useList<ModelItem>({ url: "/api/runs", modelId: 1 });
+type Model = {
+  modelId: number
+}
+
+export const Model = ({modelId}: Model) => {
+  const weather = useList<ModelItem>({ url: "/api/runs", modelId: modelId });
 
   const [isRunning, setIsRunning] = useState<boolean>(false)
   const handleStart = async () => {
     setIsRunning(true)
     try {
-      const params = new URLSearchParams({ model_id: `1` });
+      const params = new URLSearchParams({ model_id: `${modelId}` });
       await fetch(`/api/model_start?${params}`);
       await weather.reload();
     } finally {
@@ -41,13 +46,24 @@ export const BaseModel = () => {
 
   return (
     <div>
-      <Button
-        onClick={handleStart}
-        disabled={isRunning}
-        loading={isRunning}
-      >
-        Запустить модель
-      </Button>
+      <div style={{display: "flex", alignItems: "center"}}>
+        <ReadyStatus
+          url="/api/features/ready"
+          loaderLabel="Загрузка готовности данных"
+        />
+        <span>
+          <Button
+            onClick={handleStart}
+            disabled={isRunning}
+            loading={isRunning}
+          >
+            Запустить модель
+          </Button>
+        </span>
+
+      </div>
+
+
       <List
         items={weather.items}
         total={weather.total}

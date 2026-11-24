@@ -1,17 +1,20 @@
 import json
+import os
 from abc import ABC, abstractmethod
 from datetime import datetime
 from typing import Any
 
+import joblib
 import numpy as np
 from sklearn.metrics import mean_absolute_error
 
 from models.data import load_features
-from services.config import SEED
+from services.config import SEED, ARTIFACTS_DIR
 
 
 class AccidentModel(ABC):
     def __init__(self, model_id: int, conn):
+        self.model = None
         self.conn = conn
         self.model_id = model_id
         self.random_seed = SEED
@@ -46,10 +49,14 @@ class AccidentModel(ABC):
         self.mase_train = self._mase(y_train, y_pred_train, y_train)
         self.mase_test = self._mase(y_test, y_pred_test, y_train)
 
-
+    def save_artifact(self) -> None:
+        os.makedirs(ARTIFACTS_DIR, exist_ok=True)
+        filename = f"model_{self.model_id}_v{self.version}_{datetime.now().strftime('%Y%m%d_%H%M%S')}.pkl"
+        path = os.path.join(ARTIFACTS_DIR, filename)
+        joblib.dump(self.model, path)
+        self.artifact_path = path
 
     def run(self) -> tuple[Any, Any]:
-        """Шаблонный метод: задаёт порядок шагов."""
         X_train, X_test, y_train, y_test = self.load_data()
         self.train_start = datetime.now()
         self.fit(X_train, y_train)
@@ -59,9 +66,10 @@ class AccidentModel(ABC):
         self.evaluate(X_train, X_test, y_train, y_test)
         self.test_end = datetime.now()
 
+        self.save_artifact()
         self._save()
 
-        return self.mase_test, self.mase_test
+        return self.mae_test, self.mase_test
 
     def _save(self) -> None:
         sql = """
