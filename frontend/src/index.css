@@ -22,3 +22,7 @@ a {
   color: inherit;
   text-decoration: none;
 }
+
+.page_wrapper {
+  padding: 20px;
+}

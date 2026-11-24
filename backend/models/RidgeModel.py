@@ -12,7 +12,7 @@ class RidgeModel(AccidentModel):
 
     def fit(self, X, y):
         param_grid = {
-            "alpha": [0.001, 0.01, 0.1, 1.0, 10.0, 100.0, 1000.0],
+            "alpha": [0.0001, 0.001, 0.01, 0.1, 1.0, 10.0, 100.0, 1000.0, 10000.0],
             "solver": ["auto", "svd", "cholesky", "lsqr"],
         }
 

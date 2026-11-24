@@ -8,7 +8,7 @@ from services.config import TEST_SIZE, SEED
 from services.feature import get_features
 
 
-def load_features() -> tuple[Any, Any, Any, Any, Any]:
+def load_features(withDate: bool = False) -> tuple[Any, Any, Any, Any, Any]:
     records = get_features(1, -1)
     df = pd.DataFrame(records["items"])
     df["date"] = pd.to_datetime(df["date"])
@@ -18,7 +18,10 @@ def load_features() -> tuple[Any, Any, Any, Any, Any]:
 
     version = df["version"].max()
 
-    df = df.drop(columns=["date", "version"])
+    if (withDate):
+        df = df.drop(columns=["version"])
+    else:
+        df = df.drop(columns=["date", "version"])
 
     features = df.drop(columns="accidents")
     targets = df["accidents"]

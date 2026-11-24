@@ -126,3 +126,23 @@ export type ModelItem = {
   mase_train: number;
   mase_test: number;
 };
+
+export type Metric = {
+  model_name: string;
+  mae_test: number;
+  mase_test: number;
+  is_best: boolean;
+}
+
+export type ForecastPoint = {
+  date: string;
+  actual: number;
+  baseline: number;
+  ridge: number;
+  lgbm: number;
+}
+
+export type DashboardData = {
+  metrics:  Metric[];
+  forecast: ForecastPoint[];
+}

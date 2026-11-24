@@ -12,6 +12,7 @@ const links = [
   { to: "/baseline", label: "Базовая модель" },
   { to: "/ridge", label: "Ridge" },
   { to: "/lightGBM", label: "LightGBM" },
+  { to: "/dashboard", label: "Дашборд" },
 ];
 
 export const Header = () => {

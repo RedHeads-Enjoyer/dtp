@@ -2,7 +2,7 @@ from models.AccidentModel import AccidentModel
 
 
 class BaseModel(AccidentModel):
-    def __init__(self, conn):
+    def __init__(self, conn = None):
         super().__init__(1, conn)
 
     def fit(self, X, y):
