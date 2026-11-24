@@ -92,9 +92,13 @@ export const List = <T,>({
           </thead>
           <tbody>
           {loading ?
-            <div className="list-status">
-              <Loader size={16} label="Загрузка данных..." />
-            </div>
+            <tr>
+              <td colSpan={columns.length}>
+                <div className="list-status">
+                  <Loader size={16} label="Загрузка данных..." />
+                </div>
+              </td>
+            </tr>
             : items.map((item) => (
               <tr key={getKey(item)}>
                 {columns.map((c) => (

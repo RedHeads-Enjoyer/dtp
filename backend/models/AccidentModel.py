@@ -7,12 +7,14 @@ import numpy as np
 from sklearn.metrics import mean_absolute_error
 
 from models.data import load_features
+from services.config import SEED
 
 
 class AccidentModel(ABC):
     def __init__(self, model_id: int, conn):
         self.conn = conn
         self.model_id = model_id
+        self.random_seed = SEED
         self.version = None
         self.params = None
         self.artifact_path = None
@@ -49,7 +51,6 @@ class AccidentModel(ABC):
     def run(self) -> tuple[Any, Any]:
         """Шаблонный метод: задаёт порядок шагов."""
         X_train, X_test, y_train, y_test = self.load_data()
-        print(X_train.head())
         self.train_start = datetime.now()
         self.fit(X_train, y_train)
         self.train_end = datetime.now()
@@ -64,11 +65,11 @@ class AccidentModel(ABC):
 
     def _save(self) -> None:
         sql = """
-              INSERT INTO runs (model_id, params, feature_version, artifact_path, \
+              INSERT INTO runs (model_id, params, feature_version, artifact_path, random_seed, \
                                 train_start, train_end, test_start, test_end, \
                                 n_train, n_test, \
                                 mae_train, mae_test, mase_train, mase_test)
-              VALUES (%(model_id)s, %(params)s, %(feature_version)s, %(artifact_path)s, \
+              VALUES (%(model_id)s, %(params)s, %(feature_version)s, %(artifact_path)s, %(random_seed)s,\
                       %(train_start)s, %(train_end)s, %(test_start)s, %(test_end)s, \
                       %(n_train)s, %(n_test)s, \
                       %(mae_train)s, %(mae_test)s, %(mase_train)s, %(mase_test)s)
@@ -79,6 +80,7 @@ class AccidentModel(ABC):
             "params": json.dumps(self.params) if self.params is not None else None,
             "feature_version": self.version,
             "artifact_path": self.artifact_path,
+            "random_seed": self.random_seed,
             "train_start": self.train_start,
             "train_end": self.train_end,
             "test_start": self.test_start,

@@ -8,8 +8,8 @@ from entity.model_record import ModelRecord
 def fetch_model(model_id: int, page: int, page_size: int):
     base_sql = (
         f"SELECT "
-        f"  m.name, \n"
         f"  r.id, \n"
+        f"  m.name, \n"
         f"  r.params, \n"
         f"  r.feature_version, \n"
         f"  r.random_seed, \n"
